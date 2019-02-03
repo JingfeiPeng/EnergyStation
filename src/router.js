@@ -25,47 +25,41 @@ const homeOptionsDrawNavigator = createDrawerNavigator({
 export const HomeNav = createBottomTabNavigator({
     Home: {
         screen: Home,
-        navigationOptions:{
-            tabBarLabel: 'Home',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name="ios-home" size={32}/>
-            )
-        },
     },
     Statistics: {
         screen: Statistics,
-        navigationOptions:{
-            tabBarLabel: 'Statistics',
-            tabBarIcon: ({tintColor}) =>(
-                <Icon name="ios-stats" size={32}/>
-            )
-        },
     },
-    Social : {
-        screen: Social,
-        navigationOptions:{
-            tabBarLabel: 'Social',
-            tabBarIcon: ({tintColor}) =>(
-                <Icon name="ios-people"  size={32}/>
-            )
-        },
-    },
-    Setting:{
-        //change name
-        screen : Setting,
-        navigationOptions:{
-            tabBarLabel: 'Setting',
-            tabBarIcon: ({tintColor}) =>(
-                <Icon name="ios-cash" size={32}/>
-            )
-        },
-    }
+    Social : { screen: Social,},
+    Setting:{screen : Setting,}
 },{
     initialRouteName: 'Home',   
     order: ['Home','Statistics','Social','Setting'],
-    navigationOptions:{
-        tabBarVisiable : true, // default
-    },
+    navigationOptions: ({navigation}) =>({
+        tabBarIcon: ({focused, tintColor}) =>{
+            const {routeName} = navigation.state;
+            let iconName = '';
+            switch (routeName){
+                case "Home":
+                    iconName = 'ios-home';
+                    break;
+                case "Statistics":
+                    iconName = 'ios-stats';
+                    break;
+                case "Social":
+                    iconName = 'ios-people';
+                    break;
+                case "Setting":
+                    iconName = 'ios-settings'
+                    break;
+                default:
+                    iconName = 'ios-home'
+            }
+            if (!focused){
+                iconName += '-outline';
+            }
+            return <Icon name={iconName} type='Ionicons' color={tintColor} size ={32}/>
+        }
+    }),
     tabBarOptions: {
         activeTintColor:'#FDBE51',
         inactiveTintColor: 'grey',
@@ -79,6 +73,8 @@ export const HomeNav = createBottomTabNavigator({
         }
     }
 })
+
+//react-redux
 
 export const LoginNav = createStackNavigator({
     LoginSignUpSelect : {

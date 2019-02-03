@@ -88,7 +88,10 @@ const styles = StyleSheet.create({
     fontSize: 25,
     margin: 10,
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    textShadowColor:'#585858',
+    textShadowOffset:{width: 2, height: 2},
+    textShadowRadius:10,
   },
   input: {
     color: '#333333',

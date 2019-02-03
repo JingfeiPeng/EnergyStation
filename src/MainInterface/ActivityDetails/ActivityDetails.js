@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Picker, StyleSheet,Keyboard,Dimensions, Modal,Text, TextInput, View, Button, TouchableWithoutFeedback} from 'react-native';
+import { Picker, StyleSheet,Keyboard,Dimensions, Modal,Text, TextInput, View, Button, TouchableNativeFeedback ,TouchableWithoutFeedback} from 'react-native';
 import {Excercise, HealthyLife, Play, study } from "../../common/utility"
 
 
@@ -10,6 +10,7 @@ export default class ActivityDetails extends Component {
     state = {
         activity: this.props.activity,
     }
+
     changeActivityInfoHandler = (identifier, val)=>{
         this.setState(prevState => {
             return {
@@ -81,10 +82,19 @@ export default class ActivityDetails extends Component {
                     animationType ="slide">
                     <View style = {styles.modalContainer}>
                         {modalContent}
-                        <Button title="Cancel" color="red" style={styles.button} 
-                            onPress = {this.props.onModalClosed} />
-                        <Button title="Save" color='green' style={styles.button}
-                            onPress = {()=>this.props.onModalSave(this.state.activity, this.props.selectId)}/>
+                        <View style={styles.buttonContainer}>
+                            <TouchableNativeFeedback onPress = {this.props.onModalClosed}>
+                                <View  style={[styles.button,styles.cancelButton]}>
+                                    <Text style={{color:'red',fontSize:20}}> Cancel </Text>
+                                </View>
+                            </TouchableNativeFeedback>
+                            <TouchableNativeFeedback
+                                onPress = {()=>this.props.onModalSave(this.state.activity, this.props.selectId)}>
+                                <View style={[styles.button,styles.saveButton]}>
+                                    <Text style={{color:'green',fontSize:20}}> Save </Text>
+                                </View>
+                            </TouchableNativeFeedback>
+                        </View>
                     </View>
                 </Modal>
             </TouchableWithoutFeedback>
@@ -96,7 +106,22 @@ const styles = StyleSheet.create({
     modalContainer :{
         margin: 22,
     },
+    buttonContainer:{
+        flexDirection:'row',
+        justifyContent: 'space-evenly',
+    },
     button:{
-        margin:20
+        width:100,
+        alignItems: 'center',
+        marginVertical: 5,
+        padding: 5,
+        borderColor: 'black',
+        borderWidth:2,
+    },
+    cancelButton:{
+
+    },
+    saveButton:{
+        
     }
 });
