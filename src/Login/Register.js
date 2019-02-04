@@ -12,6 +12,19 @@ export default class Register extends Component {
         error: ''
     };
 
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: navigation.getParam('message','a message'),
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#FDBE51',
+                elevation: 0,
+            },
+            headerBackTitle: null,
+        };
+
+    }
+
     accountChangeHandler = val =>{
         this.setState({
             account: val

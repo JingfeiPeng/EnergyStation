@@ -48,17 +48,12 @@ export default class Home extends Component {
                 type: study
             },
         ],
-        curPoint: 0,
         selectedActivity : null,
         selectedId : null,
     };
 
     addPointHandler = (val) =>{
-        this.setState(prevState=>{
-            return {
-                curPoint: parseInt(prevState.curPoint) + parseInt(val),
-            }
-        });
+        this.props.screenProps.onChangeEnergyPtr(val);
     }
 
     activitySelectedHandler = key => {
@@ -127,11 +122,11 @@ export default class Home extends Component {
     }
 
     render() {
-        const {userName} = this.props.navigation.getParam('userName',"Error")
+        const userName = this.props.screenProps.account;
         return (
             <View style={styles.container}>
                 <Topbar userName = {userName}
-                    curPoint={this.state.curPoint}
+                    curPoint={this.props.screenProps.curPoint}
                     addActivity = {this.addActivityHandler}/>
                 <ActivityDetails
                     activity = {this.state.selectedActivity}

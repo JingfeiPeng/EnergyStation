@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableHighlight , Alert} from 'react-native'
+import { StyleSheet, Text, View,} from 'react-native'
 import { 
     createSwitchNavigator, 
     createStackNavigator,

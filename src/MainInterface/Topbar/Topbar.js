@@ -4,19 +4,18 @@ import { addIcon } from "../../common/utility"
 
 export default class TopBar extends Component {
     render() {
-        //console.warn(this.props.userName);
         return (
             <View style = {styles.topBar}>
                 <View style={styles.energyBallContainer}>
                     <View style={styles.energyBall}>
                         <Text style={styles.scorePtr}>{this.props.curPoint}</Text>
                     </View>
-                    <Text>{this.props.userName}</Text>
+                    <Text style={{fontSize:20,color:'white'}}>{this.props.userName}</Text>
                 </View>
                 <View style={styles.addIcon}>
-                <TouchableNativeFeedback onPress={this.props.addActivity}>
-                    {addIcon}
-                </TouchableNativeFeedback>
+                    <TouchableNativeFeedback onPress={this.props.addActivity}>
+                        {addIcon}
+                    </TouchableNativeFeedback>
                 </View>
             </View>
         );
@@ -29,22 +28,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 70,
         backgroundColor: '#FDBE51',
+        justifyContent:'space-between'
     },
     energyBallContainer:{
-        width: "50%",
+        flexDirection:'row',
+        alignItems:'center'
     },
     energyBall:{
         width:50,
         height:50,
-        backgroundColor:'white',
+        backgroundColor:'#FDBE51',
+        borderWidth:3,
         borderRadius: 20,
+        borderColor: 'white',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         margin:10,
     },
     addIcon:{
-        width: "50%",
         alignItems: "flex-end",
         paddingRight: 10,
     },

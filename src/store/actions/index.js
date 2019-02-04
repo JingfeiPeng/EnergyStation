@@ -1,2 +1,2 @@
 export {changeEnergyPtr} from  './changeEnergyPtr';
-export {registerAccount} from './registerAccount';
+export {fillinAccountInfo} from './fillinAccountInfo';

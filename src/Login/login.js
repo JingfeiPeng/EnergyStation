@@ -9,6 +9,19 @@ export default class Login extends Component {
         password: ""
     };
 
+    static navigationOptions = ({ navigation }: { navigation: any }) => {
+        return {
+            title: navigation.getParam('message','a message'),
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#FDBE51',
+                elevation: 0,
+            },
+            headerBackTitle: null,
+        };
+
+    }
+
     accountChangeHandler = val =>{
         this.setState({
             account: val
@@ -24,7 +37,6 @@ export default class Login extends Component {
 
 
     render() {
-        let {signIn} = this.props; 
         return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
@@ -53,9 +65,8 @@ export default class Login extends Component {
                     <View style={styles.account}>
                         <TouchableHighlight onPress={() => {
                             Keyboard.dismiss();
-                            this.props.navigation.navigate('HomeNav',{
-                                userName: this.state.account,
-                            });
+                            this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.account);
+                            this.props.navigation.navigate('HomeNav');
                         }} 
                             underlayColor="white">
                             <View style={styles.Login}>

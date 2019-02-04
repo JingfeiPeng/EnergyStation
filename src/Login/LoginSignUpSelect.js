@@ -9,7 +9,6 @@ export default class LoginSignUpSelect extends Component {
     static navigationOptions ={
         header: null,
     }
-
     render() {
         return (
             <View style={styles.container}>
@@ -19,12 +18,16 @@ export default class LoginSignUpSelect extends Component {
                 <Text style={styles.energyStationText}>
                     Energy Station 
                  </Text>
-                 <TouchableOpacity onPress={ ()=>this.props.navigation.navigate('Register') }>
+                 <TouchableOpacity onPress={ ()=>this.props.navigation.navigate('Register',{
+                                message: "Register"
+                            }) }>
                     <View style={styles.Register}>
                         <Text style={styles.RegisterText}>Register</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={ ()=>this.props.navigation.navigate('Login') }>
+                <TouchableOpacity onPress={ ()=>this.props.navigation.navigate('Login',{
+                    message: "Login"
+                }) }>
                     <View style={styles.Login}>
                         <Text style={styles.LoginText}>Login</Text>
                     </View>
