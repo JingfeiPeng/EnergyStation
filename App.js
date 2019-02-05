@@ -1,7 +1,8 @@
 
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
-//import firebase from 'firebase'; 
+import { connect } from 'react-redux';
+import {changeEnergyPtr,fillinAccountInfo} from './src/store/actions/index'
 
 import { YellowBox } from 'react-native';
 
@@ -9,34 +10,34 @@ import AppNav from './src/router';
 
 
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
-
-export default class  App extends Component {
-
-  /* setup firebase
-  componentWillMount(){
-    var config = {
-      apiKey: "AIzaSyBPDtqcm1o9wu7T9eKPp-TdEXM-PJqb-YI",
-      authDomain: "energystation-c5f1f.firebaseapp.com",
-      databaseURL: "https://energystation-c5f1f.firebaseio.com",
-      projectId: "energystation-c5f1f",
-      storageBucket: "energystation-c5f1f.appspot.com",
-      messagingSenderId: "690361745753"
-    };
-    firebase.initializeApp(config);
-  }*/
-
+// screenProps={{account: this.props.account,curPoint=this.props.curPoint}}
+class  App extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <AppNav/>
-      </View>
+        <AppNav screenProps={this.props} />
     );
   }
 }
 
-
-const styles = StyleSheet.create({
-  container:{
-    flex : 1
+const mapStateToProps = (state) =>{
+  return {
+    account: state.generalReducer.account,
+    curPoint: state.generalReducer.curPoint,
   }
-});
+}
+
+//dispatcher
+const mapDispatchToProps = dispatch =>{
+  return {
+    onChangeEnergyPtr: (ptrAmt)=> dispatch(changeEnergyPtr(ptrAmt)),
+    onFillinAccountInfo: (account,nickName) => dispatch(fillinAccountInfo(account,nickName)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+// const styles = StyleSheet.create({
+//   container:{
+//     flex : 1
+//   }
+// });
