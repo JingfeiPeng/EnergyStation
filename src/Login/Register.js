@@ -7,6 +7,7 @@ import Error from "../common/Error"
 export default class Register extends Component {
     state = {
         account: "",
+        nickName:'',
         password: "",
         passwordRepeat: "",
         error: ''
@@ -26,6 +27,11 @@ export default class Register extends Component {
     }
 
     accountChangeHandler = val =>{
+        if (val.length > 20){
+            this.setState({
+                error: 'Exceeded max length requirement for account'
+            })
+        }
         this.setState({
             account: val
         });
@@ -36,6 +42,22 @@ export default class Register extends Component {
             password: val,
         });
     }
+
+    nickNameChangeHandler = val =>{
+        if (val.length > 20){
+            this.setState({
+                error:"Nick name exceeded max length"
+            })
+        } 
+        this.setState({
+            nickName: val
+        })
+        if (val.length == 0){
+            this.setState({
+                error: "Nick Name can't be empty"
+            })
+        }
+    }
     
     repeatPasswordChangeHandler = val =>{
         this.setState({
@@ -45,7 +67,12 @@ export default class Register extends Component {
 
     registerAccountHandler = () =>{
         let noError = true;
-        if ( this.state.password !== this.state.passwordRepeat){
+        if (this.state.account.length > 20){
+            this.setState({
+                error: 'Exceeded max length requirement for account'
+            })
+            noError = false;
+        } else if ( this.state.password !== this.state.passwordRepeat){
             this.setState({error:"Passwords do not match"});
             noError = false;
         } else if (this.state.password.length < 8){
@@ -86,7 +113,7 @@ export default class Register extends Component {
             .then(parsedRes => {
                 console.warn(parsedRes);
             });
-
+            this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.nickName);
             this.props.navigation.navigate('HomeNav',{
                 userName: this.state.account,
             });
@@ -116,8 +143,18 @@ export default class Register extends Component {
                         <TextInput
                             style={{ width: '70%'}}
                             value = {this.state.account}
-                            placeholder="abc@gmail.com"
+                            placeholder="randomUser123"
                             onChangeText={this.accountChangeHandler}
+                        />
+                    </View>
+                    <View style={styles.account}>
+                        <Text style={styles.input}>Nick Name: </Text>
+                        <TextInput
+                            secureTextEntry={true}
+                            value = {this.state.nickName}
+                            style={{ width: '70%'}}
+                            placeholder='Joseph Stalin'
+                            onChangeText={this.nickNameChangeHandler}
                         />
                     </View>
                     <View style={styles.account}>

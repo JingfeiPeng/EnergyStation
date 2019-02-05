@@ -7,11 +7,17 @@ export default class Setting extends Component {
     state = {
 
     };
-
     render() {
         return (
             <View style={styles.container}>
-                <Text> Setting </Text>
+                <View>
+                    <Text>{this.props.screenProps.account}</Text>
+                </View>
+                <TouchableHighlight onPress={()=>this.props.navigation.navigate('LoginSignUpSelect')}>
+                    <View style ={styles.logoutButton}>
+                        <Text style={{color:'white', fontSize:20}}>Logout</Text>
+                    </View>
+                </TouchableHighlight>
             </View>
           );
     }
@@ -20,6 +26,18 @@ export default class Setting extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ddd9d9'
+        backgroundColor: '#ddd9d9',
+        alignItems:'center',
+        justifyContent: 'center',
+    },
+    logoutButton:{
+        backgroundColor:'blue',
+        width:200,
+        alignItems:'center',
+        justifyContent: 'center',
+        borderRadius:10, 
+        paddingHorizontal:40,
+        paddingVertical: 5,
+        elevation: 1,
     }
 });

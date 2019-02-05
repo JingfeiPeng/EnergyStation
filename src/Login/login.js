@@ -11,7 +11,7 @@ export default class Login extends Component {
 
     static navigationOptions = ({ navigation }: { navigation: any }) => {
         return {
-            title: navigation.getParam('message','a message'),
+            title: navigation.getParam('message','Login'),
             headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: '#FDBE51',

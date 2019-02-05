@@ -6,6 +6,9 @@ export const addIcon = (<Icon name="md-add" size={40} color="black" />);
 export const expandIcon = (<Icon name="md-expand" size={35} color="#FDBE51" />);
 export const star = (<Icon name="ios-star" size={30} color="#FDBE51"/>);
 export const starOutline = (<Icon name="ios-star-outline" size={30} color="#FDBE51"/>);
+export const timePickerIcon = (<Icon name="md-time" size={30} color= "#FDBE51"/>)
+export const backButtonIcon = (<Icon name="md-arrow-back" size={30} color='white'/>)
+export const deleteButtonIcon = (<Icon name="md-trash" size={30} color='black'/>)
 
 // consts for activity types icons
 export const excerciseIcon = (<Icon name="ios-walk" size={40} color="#FDBE51"/>);

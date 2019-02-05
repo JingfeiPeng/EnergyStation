@@ -23,14 +23,10 @@ const homeOptionsDrawNavigator = createDrawerNavigator({
 })*/
 
 export const HomeNav = createBottomTabNavigator({
-    Home: {
-        screen: Home,
-    },
-    Statistics: {
-        screen: Statistics,
-    },
+    Home: { screen: Home},
+    Statistics: { screen: Statistics,},
     Social : { screen: Social,},
-    Setting:{screen : Setting,}
+    Setting:{ screen : Setting,}
 },{
     initialRouteName: 'Home',   
     order: ['Home','Statistics','Social','Setting'],

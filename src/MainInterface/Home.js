@@ -114,6 +114,16 @@ export default class Home extends Component {
         });
     }
 
+    deleteActivityHandler = (index) =>{
+        this.setState(prevState =>{
+            return {
+                activityNames: prevState.activityNames.filter((val,i)=>{
+                    return i != index
+                })
+            }
+        });
+    }
+
     modalCloseHandler = () =>{
         this.setState({
             selectedActivity: null,
@@ -131,6 +141,7 @@ export default class Home extends Component {
                 <ActivityDetails
                     activity = {this.state.selectedActivity}
                     selectId = {this.state.selectedId}
+                    deleteActivity = {this.deleteActivityHandler}
                     onModalClosed = {this.modalCloseHandler}
                     onModalSave = {this.modalSaveActivityHandler}
                 />

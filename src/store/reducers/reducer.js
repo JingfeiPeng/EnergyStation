@@ -2,7 +2,8 @@ import {CHANGEENERGYPTR, FILLINACCOUNTINFO} from '../actions/actionTypes'
 
  
 const initialState = {
-    account: "",
+    account: '',
+    nickName: '',
     curPoint: 0,
 }
 
@@ -20,6 +21,7 @@ const reducer = (state = initialState, action) =>{
             return {
                 ...state,
                 account: action.account,
+                nickName: action.nickName,
             }
         default:
             return state;
