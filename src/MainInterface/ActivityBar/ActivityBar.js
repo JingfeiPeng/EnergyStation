@@ -1,7 +1,8 @@
 
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableHighlight , Alert} from 'react-native';
-import {expandIcon, star, starOutline,excerciseIcon, studyIcon, healthyIcon, playIcon, Excercise, HealthyLife, Play, study } from "../../common/utility"
+import {expandIcon, star, starOutline,excerciseIcon, studyIcon, 
+  healthyIcon, playIcon, Excercise, HealthyLife, Play, study } from "../../common/utility"
 
 
 export default class ActivityBar extends Component {

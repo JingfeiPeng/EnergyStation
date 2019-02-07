@@ -1,7 +1,7 @@
 
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableHighlight , Alert} from 'react-native';
-
+import {settingPersonIcon} from '../common/utility'
 
 export default class Setting extends Component {
     state = {
@@ -11,6 +11,7 @@ export default class Setting extends Component {
         return (
             <View style={styles.container}>
                 <View>
+                    {settingPersonIcon}
                     <Text>{this.props.screenProps.account}</Text>
                 </View>
                 <TouchableHighlight onPress={()=>this.props.navigation.navigate('LoginSignUpSelect')}>
@@ -26,7 +27,7 @@ export default class Setting extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ddd9d9',
+        backgroundColor: 'white',
         alignItems:'center',
         justifyContent: 'center',
     },

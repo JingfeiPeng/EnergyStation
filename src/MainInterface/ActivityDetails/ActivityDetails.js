@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { Picker, StyleSheet,Keyboard,Dimensions, Modal,Text, TextInput, View,TouchableNativeFeedback, TouchableOpacity ,TouchableWithoutFeedback} from 'react-native';
+import { Picker, StyleSheet,Keyboard,Dimensions, Modal,Text, TextInput, View,
+    TouchableNativeFeedback, TouchableOpacity,TouchableWithoutFeedback, KeyboardAvoidingView} from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Excercise, HealthyLife, Play, study, timePickerIcon,backButtonIcon,deleteButtonIcon} from "../../common/utility"
 
@@ -63,7 +64,7 @@ export default class ActivityDetails extends Component {
         let modalContent = null;
         if (this.props.activity !== null){
             modalContent = (
-                <View style={{height:450}}>
+                <View style={{height:300}}>
                     <Picker
                         selectedValue={this.state.activity.type}
                         //style={}
@@ -113,15 +114,16 @@ export default class ActivityDetails extends Component {
                             <Picker
                                 selectedValue={this.state.activity.energyPtr}
                                 style={{width:120}}
+                                value={this.state.activity.energyPtr}
                                 onValueChange={(val) => this.changeActivityInfoHandler("energyPtr", val)}
                                 mode="dialog"
                                 itemStyle={{fontSize:17, paddingLeft: width*0.035}}
                             >
                             <Picker.Item label="0" value={0}/>
-                            <Picker.Item label='40' value={40}/>
-                            <Picker.Item label="30" value={30}/>
-                            <Picker.Item label="20" value={20}/>
                             <Picker.Item label="10" value={10}/>
+                            <Picker.Item label="20" value={20}/>
+                            <Picker.Item label="30" value={30}/>
+                            <Picker.Item label='40' value={40}/>
                             </Picker>
 
                     </View>
@@ -135,35 +137,35 @@ export default class ActivityDetails extends Component {
                     visible={this.props.activity !== null}
                     onRequestClose={this.props.onModalClosed}
                     animationType ="slide">
-                    <View style={styles.topBar}>
-                        <View style={{flexDirection:'row',padding:5}}>
-                            <TouchableNativeFeedback onPress={this.props.onModalClosed}>
-                                {backButtonIcon}
-                            </TouchableNativeFeedback>
-                            <Text style={{marginLeft:10,fontSize:25, fontWeight:'bold',color:'white'}}>View Activity</Text>
+                        <View style={styles.topBar}>
+                            <View style={{flexDirection:'row',padding:5}}>
+                                <TouchableNativeFeedback onPress={this.props.onModalClosed}>
+                                    {backButtonIcon}
+                                </TouchableNativeFeedback>
+                                <Text style={{marginLeft:10,fontSize:25, fontWeight:'bold',color:'white'}}>View Activity</Text>
+                            </View>
+                            <View style={{marginRight:10}}>
+                                <TouchableOpacity onPress={this.deleteItself}>
+                                    {deleteButtonIcon}
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                        <View style={{marginRight:10}}>
-                            <TouchableOpacity onPress={this.deleteItself}>
-                                {deleteButtonIcon}
-                            </TouchableOpacity>
+                        <View style = {styles.modalContainer}>
+                            {modalContent}
+                            <View style={styles.buttonContainer}>
+                                <TouchableNativeFeedback onPress = {this.props.onModalClosed}>
+                                    <View  style={[styles.button,styles.cancelButton]}>
+                                        <Text style={{color:'red',fontSize:20}}> Cancel </Text>
+                                    </View>
+                                </TouchableNativeFeedback>
+                                <TouchableNativeFeedback
+                                    onPress = {()=>this.props.onModalSave(this.state.activity, this.props.selectId)}>
+                                    <View style={[styles.button,styles.saveButton]}>
+                                        <Text style={{color:'green',fontSize:20}}> Save </Text>
+                                    </View>
+                                </TouchableNativeFeedback>
+                            </View>
                         </View>
-                    </View>
-                    <View style = {styles.modalContainer}>
-                        {modalContent}
-                        <View style={styles.buttonContainer}>
-                            <TouchableNativeFeedback onPress = {this.props.onModalClosed}>
-                                <View  style={[styles.button,styles.cancelButton]}>
-                                    <Text style={{color:'red',fontSize:20}}> Cancel </Text>
-                                </View>
-                            </TouchableNativeFeedback>
-                            <TouchableNativeFeedback
-                                onPress = {()=>this.props.onModalSave(this.state.activity, this.props.selectId)}>
-                                <View style={[styles.button,styles.saveButton]}>
-                                    <Text style={{color:'green',fontSize:20}}> Save </Text>
-                                </View>
-                            </TouchableNativeFeedback>
-                        </View>
-                    </View>
                 </Modal>
             </TouchableWithoutFeedback>
         );
@@ -172,12 +174,10 @@ export default class ActivityDetails extends Component {
 
 const styles = StyleSheet.create({
     modalContainer :{
-        margin: 22,
-        alignItems:'stretch',
+        padding: 22,
         justifyContent:'space-around'
     },
     topBar: {
-        width:'100%',
         flexDirection: 'row',
         alignItems: 'center',
         height: 70,

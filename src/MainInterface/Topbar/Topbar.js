@@ -1,16 +1,25 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableNativeFeedback} from 'react-native';
+import { StyleSheet, Dimensions, View, TouchableNativeFeedback} from 'react-native';
 import { addIcon } from "../../common/utility"
+import EnergyBall from './EnergyBall/EnergyBall'
+
+
+
+const { width, height } = Dimensions.get('window');
 
 export default class TopBar extends Component {
+//     <View style={styles.energyBallContainer}>
+//     <View style={styles.energyBall}>
+//         <Text style={styles.scorePtr}>{this.props.curPoint}</Text>
+//     </View>
+//     <Text style={{fontSize:20,color:'white'}}>{this.props.userName}</Text>
+// </View>
     render() {
+        //<EnergyBall energyPtr={this.props.energyPtr}/>
         return (
             <View style = {styles.topBar}>
                 <View style={styles.energyBallContainer}>
-                    <View style={styles.energyBall}>
-                        <Text style={styles.scorePtr}>{this.props.curPoint}</Text>
-                    </View>
-                    <Text style={{fontSize:20,color:'white'}}>{this.props.userName}</Text>
+                    <EnergyBall energyPtr={this.props.curPoint}/>
                 </View>
                 <View style={styles.addIcon}>
                     <TouchableNativeFeedback onPress={this.props.addActivity}>
@@ -31,8 +40,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-between'
     },
     energyBallContainer:{
-        flexDirection:'row',
-        alignItems:'center'
+        marginLeft: width*0.02
     },
     energyBall:{
         width:50,
