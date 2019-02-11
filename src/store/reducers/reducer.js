@@ -2,8 +2,8 @@ import {CHANGEENERGYPTR, FILLINACCOUNTINFO} from '../actions/actionTypes'
 
  
 const initialState = {
-    account: '',
-    nickName: '',
+    account: 'Test Account ID',
+    nickName: 'Test User Dev',
     curPoint: 0,
 }
 

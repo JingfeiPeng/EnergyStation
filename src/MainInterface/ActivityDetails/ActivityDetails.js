@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Picker, StyleSheet,Keyboard,Dimensions, Modal,Text, TextInput, View,
+import { Picker, StyleSheet,Keyboard,Dimensions, Modal,Text, TextInput, View,StatusBar,
     TouchableNativeFeedback, TouchableOpacity,TouchableWithoutFeedback, KeyboardAvoidingView} from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Excercise, HealthyLife, Play, study, timePickerIcon,backButtonIcon,deleteButtonIcon} from "../../common/utility"
@@ -137,6 +137,7 @@ export default class ActivityDetails extends Component {
                     visible={this.props.activity !== null}
                     onRequestClose={this.props.onModalClosed}
                     animationType ="slide">
+                        <StatusBar backgroundColor="#FDBE51" barStyle="light-content" animated={true}/>
                         <View style={styles.topBar}>
                             <View style={{flexDirection:'row',padding:5}}>
                                 <TouchableNativeFeedback onPress={this.props.onModalClosed}>

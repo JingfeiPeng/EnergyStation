@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Keyboard,Text, View, TextInput, TouchableHighlight, TouchableWithoutFeedback} from 'react-native';
+import { StyleSheet, Keyboard,Text, View, TextInput,StatusBar,TouchableHighlight, TouchableWithoutFeedback} from 'react-native';
 
 
 export default class Login extends Component {
@@ -34,12 +34,20 @@ export default class Login extends Component {
         });
     }
 
+    LoginHandler = () => {
+        Keyboard.dismiss();
+        // account then NickName
+        this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.account!=''? this.state.account: 'Test User' );
+        this.props.navigation.navigate('HomeNav');
+    }
+
 
 
     render() {
         return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
+                    <StatusBar backgroundColor="#FDBE51" barStyle="light-content" animated={true}/>
                     <View style={styles.titleContainer}>
                     <Text style={styles.title}>Login to EnergyStation</Text>
                     </View>
@@ -63,11 +71,7 @@ export default class Login extends Component {
                     />
                     </View>
                     <View style={styles.account}>
-                        <TouchableHighlight onPress={() => {
-                            Keyboard.dismiss();
-                            this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.account);
-                            this.props.navigation.navigate('HomeNav');
-                        }} 
+                        <TouchableHighlight onPress={this.LoginHandler} 
                             underlayColor="white">
                             <View style={styles.Login}>
                                 <Text style={styles.buttonText}>Login</Text>

@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TextInput,Keyboard, TouchableHighlight , TouchableWithoutFeedback} from 'react-native';
+import { StyleSheet,StatusBar, Text, View, TextInput,Keyboard, TouchableHighlight , TouchableWithoutFeedback} from 'react-native';
 import Error from "../common/Error"
 
 
@@ -135,6 +135,7 @@ export default class Register extends Component {
         return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
+                    <StatusBar backgroundColor="#FDBE51" barStyle="light-content" animated={true}/>
                     <View style={styles.titleContainer}>
                     <Text style={styles.title}>Welcome to EnergyStation</Text>
                     </View>

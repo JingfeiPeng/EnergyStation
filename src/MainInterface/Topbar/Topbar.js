@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Dimensions, View, TouchableNativeFeedback} from 'react-native';
+import { StyleSheet, Dimensions, View,Text, TouchableNativeFeedback} from 'react-native';
 import { addIcon } from "../../common/utility"
 import EnergyBall from './EnergyBall/EnergyBall'
 
@@ -20,6 +20,7 @@ export default class TopBar extends Component {
             <View style = {styles.topBar}>
                 <View style={styles.energyBallContainer}>
                     <EnergyBall energyPtr={this.props.curPoint}/>
+                    <Text style={{fontSize:20,color:'white', marginLeft:10}}>{this.props.userName}</Text>
                 </View>
                 <View style={styles.addIcon}>
                     <TouchableNativeFeedback onPress={this.props.addActivity}>
@@ -40,7 +41,9 @@ const styles = StyleSheet.create({
         justifyContent:'space-between'
     },
     energyBallContainer:{
-        marginLeft: width*0.02
+        flexDirection: 'row',
+        marginLeft: width*0.02,
+        alignItems: 'center'
     },
     energyBall:{
         width:50,

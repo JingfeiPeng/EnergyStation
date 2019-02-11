@@ -16,17 +16,32 @@ import Setting from './Setting/Setting'
 import Login from './Login/login'
 import Register from './Login/Register'
 import LoginSignUpSelect from './Login/LoginSignUpSelect'
+import PersonalInfo from './Setting/PersonalInfo/PersonalInfo'
+import Logout from './Setting/Logout/Logout'
 
 /*
 const homeOptionsDrawNavigator = createDrawerNavigator({
     addNewActivty: 
 })*/
 
+
+export const SettingPageNav = createStackNavigator({
+    Setting:{
+        screen:Setting
+    },
+    PersonalInfo:{
+        screen: PersonalInfo
+    },
+    Logout:{
+        screen:Logout
+    }
+})
+
 export const HomeNav = createBottomTabNavigator({
     Home: { screen: Home},
     Statistics: { screen: Statistics,},
     Social : { screen: Social,},
-    Setting:{ screen : Setting,}
+    Setting:{ screen : SettingPageNav,}
 },{
     initialRouteName: 'Home',   
     order: ['Home','Statistics','Social','Setting'],

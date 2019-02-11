@@ -1,17 +1,29 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity , Image} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity , Image, StatusBar} from 'react-native';
 
 import logo from '../../imgs/energyStationLogo.png' 
 // logo is an object that contains the path
 
 export default class LoginSignUpSelect extends Component {
+    state = {
+        DEV_MODE:false
+    }
+
+
     static navigationOptions ={
         header: null,
     }
+
+    componentDidMount(){
+        if (this.state.DEV_MODE) this.props.navigation.navigate('HomeNav');
+    }
+
     render() {
+
         return (
             <View style={styles.container}>
+                <StatusBar backgroundColor="white" barStyle="dark-content"/>
                 <Image style={{height:200, width:200}}
                     source = {logo}
                 />

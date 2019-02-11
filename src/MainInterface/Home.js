@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, ScrollView, Modal , Alert} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, StatusBar , Alert} from 'react-native';
 
 import ActivityBar from './ActivityBar/ActivityBar';
 import Topbar from './Topbar/Topbar';
@@ -55,6 +55,18 @@ export default class Home extends Component {
         selectedActivity : null,
         selectedId : null,
     };
+
+    componentDidMount(){
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+            StatusBar.setBarStyle('light-content');
+            StatusBar.setBackgroundColor('#FDBE51');
+            StatusBar.setTranslucent(false)
+        });
+    }
+
+    componentWillUnmount() {
+        this._navListener.remove();
+    }
 
     addPointHandler = (val) =>{
         this.props.screenProps.onChangeEnergyPtr(val);
@@ -136,10 +148,11 @@ export default class Home extends Component {
     }
 
     render() {
-        const userName = this.props.screenProps.account;
+        const nickName = this.props.screenProps.nickName;
         return (
             <View style={styles.container}>
-                <Topbar userName = {userName}
+                <StatusBar backgroundColor="#FDBE51" barStyle="light-content" animated/>
+                <Topbar userName = {nickName}
                     curPoint={this.props.screenProps.curPoint}
                     addActivity = {this.addActivityHandler}/>
                 <ActivityDetails
