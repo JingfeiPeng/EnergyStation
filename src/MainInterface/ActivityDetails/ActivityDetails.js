@@ -29,8 +29,8 @@ export default class ActivityDetails extends Component {
         isDateTimePickerVisible:false,
         errorMsg:'',
         validate:{
-            type:true,
-            name:true,
+            type: true,
+            name: true,
             length: true,
         },
         validRules:{
@@ -43,12 +43,13 @@ export default class ActivityDetails extends Component {
     }
 
     setValidOrNot = (field,val) =>{
-        this.setState(prevState=> ({
+        this.setState(prevState => ({
             validate:{
                 ...prevState.validate,
                 [field]:val
-            }
+            },
         }))
+        //console.warn(this.state)
     }
 
     // return false if state is invalid,  return true if valid 
@@ -66,11 +67,11 @@ export default class ActivityDetails extends Component {
             this.setValidOrNot('name',true)
         }
         // check time Length 
-        const timeLength = this.state.activity.length.length;
+        const timeLength = this.state.activity.length;
         if (timeLength < this.state.validRules.timeMinLength){
             errorMsg += 'Length of Acvtivity must be greater than ' + this.state.validRules.timeMinLength + 'minutes.\n'
             this.setValidOrNot('length',false);
-        } else if (timeLength > this.state.validRules.timeMinLength){
+        } else if (timeLength > this.state.validRules.timeMaxLength){
             errorMsg += 'Length of Acvtivity must be smaller than' + this.state.validRules.timeMaxLength + ' Minutes\n'
             this.setValidOrNot('length',false)
         } else {
@@ -159,6 +160,7 @@ export default class ActivityDetails extends Component {
         if (this.props.activity !== null){
             modalContent = (
                 <View style={{height:300}}>
+                    <View style={this.state.validate.type? styles.validInput: styles.invalidInput }>
                     <Picker
                         selectedValue={this.state.activity.type}
                         style={this.state.validate.type == false ? styles.invalidInput: styles.validInput }
@@ -172,22 +174,29 @@ export default class ActivityDetails extends Component {
                     <Picker.Item label={Play}value={Play}/>
                     <Picker.Item label={study} value={study}/>
                     </Picker>
+                    </View>
 
                     <Text style={styles.textLabel}> Activity Name: </Text>
-                    <TextInput 
-                        style={this.state.validate.name == false ? styles.invalidInput: styles.validInput }
-                        value={this.state.activity.activityName}
-                        onChangeText = {(val) =>this.changeActivityInfoHandler("activityName",val)}
-                        placeholder = "Activity Name">
-                    </TextInput>
+                    <View style={this.state.validate.name == false ? styles.invalidInput: styles.validInput }>
+                        <TextInput 
+                            underlineColorAndroid = 'transparent'
+                            style={{borderBottomColor:"red"}}
+                            value={this.state.activity.activityName}
+                            onChangeText = {(val) =>this.changeActivityInfoHandler("activityName",val)}
+                            placeholder = "Activity Name">
+                        </TextInput>
+                    </View>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
                         <Text style={styles.textLabel}>Estimated Length of Activity in minutes</Text>
+                        <View style={this.state.validate.length == false ? styles.invalidInput: styles.validInput }>
                         <TextInput
+                            underlineColorAndroid = 'transparent'
                             style={this.state.validate.length == false ? styles.invalidInput: styles.validInput }
                             value={this.state.activity.length} style={{width:90}} 
                             onChangeText = {(val) =>this.changeActivityInfoHandler("length",val)}
                             placeholder = "50 mins">
                         </TextInput>
+                        </View>
                     </View>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
                         <TouchableNativeFeedback onPress={this._showDateTimePicker}>
@@ -228,7 +237,6 @@ export default class ActivityDetails extends Component {
                     </View>
                 </View>
             );
-            //console.warn(this.props.selectId);
         }
         return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -279,10 +287,12 @@ export default class ActivityDetails extends Component {
 
 const styles = StyleSheet.create({
     validInput:{
-
+        borderBottomWidth: 1,
+        borderBottomColor: 'black',
     },
     invalidInput:{
-        borderColor: 'red',
+        borderBottomWidth: 1,
+        borderBottomColor: 'red',
     },  
     modalContainer :{
         padding: 22,

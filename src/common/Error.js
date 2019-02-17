@@ -25,5 +25,6 @@ const styles = StyleSheet.create({
   ErrorStyle:{
       color:'red',
       fontSize: 20,
+      textAlign: 'center'
   }
 });
