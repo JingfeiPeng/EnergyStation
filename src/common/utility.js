@@ -18,7 +18,7 @@ export const cameraIcon = (<Icon name='ios-camera' size={40} color='white'/>)
 export const settingsIcon = (<Icon name='ios-settings' color='#64acf4' size ={settingIconSize}/>)
 export const paymentIcon = (<MaterialIcons name="payment" size={settingIconSize} color="green"/>)
 export const activityPlansIcon =(<Icon name='md-paper-plane' size={settingIconSize} color='orange'/>)
-
+export const backButtonIconWhite = (<Icon name="md-arrow-back" size={25} color='black'/>)
 
 // consts for activity types icons
 export const excerciseIcon = (<Icon name="ios-walk" size={40} color="#FDBE51"/>);

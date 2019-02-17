@@ -3,15 +3,95 @@ import { Picker, StyleSheet,Keyboard,Dimensions, Modal,Text, TextInput, View,Sta
     TouchableNativeFeedback, TouchableOpacity,TouchableWithoutFeedback, KeyboardAvoidingView} from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Excercise, HealthyLife, Play, study, timePickerIcon,backButtonIcon,deleteButtonIcon} from "../../common/utility"
+import Error from '../../common/Error'
 
 
 const {width, height} = Dimensions.get('window');
 
-
+// activityName:'Excercise',
+// energyPtr:10,
+// length:'20',
+// hour: '12',
+// minute: '30',
+// type: Excercise,
+// complete: false,
 export default class ActivityDetails extends Component {
     state = {
-        activity: this.props.activity,
+        activity: {
+            activityName:'',
+            energyPtr: 0,
+            length:'',
+            hour: '',
+            minute: '',
+            type: '',
+            complete: false,
+        },
         isDateTimePickerVisible:false,
+        errorMsg:'',
+        validate:{
+            type:true,
+            name:true,
+            length: true,
+        },
+        validRules:{
+            nameMaxLength : 25,
+            nameMinLength: 1,
+            timeMaxLength : 1440, //whole day
+            timeMinLength : 5,
+            invalidType: '',
+        }
+    }
+
+    setValidOrNot = (field,val) =>{
+        this.setState(prevState=> ({
+            validate:{
+                ...prevState.validate,
+                [field]:val
+            }
+        }))
+    }
+
+    // return false if state is invalid,  return true if valid 
+    valdiateInput = () =>{
+        let errorMsg = '';
+        const nameLength = this.state.activity.activityName.length;
+        // check ActivityName
+        if ( nameLength > this.state.validRules.nameMaxLength){
+            errorMsg += 'Activity Name Must be within' + this.state.validRules.nameMaxLength+ 'characters\n';
+            this.setValidOrNot('name',false);
+        } else if ( nameLength <this.state.validRules.nameMinLength){
+            errorMsg += 'Activity Name Cannot be empty\n';
+            this.setValidOrNot('name',false);
+        } else {
+            this.setValidOrNot('name',true)
+        }
+        // check time Length 
+        const timeLength = this.state.activity.length.length;
+        if (timeLength < this.state.validRules.timeMinLength){
+            errorMsg += 'Length of Acvtivity must be greater than ' + this.state.validRules.timeMinLength + 'minutes.\n'
+            this.setValidOrNot('length',false);
+        } else if (timeLength > this.state.validRules.timeMinLength){
+            errorMsg += 'Length of Acvtivity must be smaller than' + this.state.validRules.timeMaxLength + ' Minutes\n'
+            this.setValidOrNot('length',false)
+        } else {
+            this.setValidOrNot('length',true)
+        }
+        // check Type
+        if (this.state.activity.type == this.state.validRules.invalidType){
+            errorMsg += "Activity Type cannot be empty"
+            this.setValidOrNot('type',false)
+        } else {
+            this.setValidOrNot('type',true)
+        }
+
+        if (errorMsg != ''){
+            this.setState({
+                errorMsg: errorMsg,
+            })
+            return false
+        } else {
+            return true
+        }
     }
 
     changeActivityInfoHandler = (identifier, val)=>{
@@ -22,6 +102,12 @@ export default class ActivityDetails extends Component {
                     [identifier]: val,
                 }
             }
+        })
+    }
+
+    componentDidMount(){
+        this.setState({
+            activity: this.props.activity
         })
     }
 
@@ -59,6 +145,14 @@ export default class ActivityDetails extends Component {
         this.props.onModalClosed();
     }
     
+    renderError = () =>{
+        if (this.state.errorMsg !=''){
+            return (
+                <Error errorMsg={this.state.errorMsg}/>
+            )
+        }
+    }
+    
 
     render() {
         let modalContent = null;
@@ -67,7 +161,7 @@ export default class ActivityDetails extends Component {
                 <View style={{height:300}}>
                     <Picker
                         selectedValue={this.state.activity.type}
-                        //style={}
+                        style={this.state.validate.type == false ? styles.invalidInput: styles.validInput }
                         onValueChange={(val) => this.changeActivityInfoHandler("type", val)}
                         mode="dropdown"
                         itemStyle={{fontSize:17, paddingLeft: width*0.035}}
@@ -80,13 +174,17 @@ export default class ActivityDetails extends Component {
                     </Picker>
 
                     <Text style={styles.textLabel}> Activity Name: </Text>
-                    <TextInput value={this.state.activity.activityName}
+                    <TextInput 
+                        style={this.state.validate.name == false ? styles.invalidInput: styles.validInput }
+                        value={this.state.activity.activityName}
                         onChangeText = {(val) =>this.changeActivityInfoHandler("activityName",val)}
                         placeholder = "Activity Name">
                     </TextInput>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
                         <Text style={styles.textLabel}>Estimated Length of Activity in minutes</Text>
-                        <TextInput value={this.state.activity.length} style={{width:90}} 
+                        <TextInput
+                            style={this.state.validate.length == false ? styles.invalidInput: styles.validInput }
+                            value={this.state.activity.length} style={{width:90}} 
                             onChangeText = {(val) =>this.changeActivityInfoHandler("length",val)}
                             placeholder = "50 mins">
                         </TextInput>
@@ -96,7 +194,8 @@ export default class ActivityDetails extends Component {
                             <View style={{flexDirection:'row',alignItems:'center'}}>
                                 <Text style={styles.textLabel}>Start time</Text>
                                 <TextInput placeholder="10:00" 
-                                    style={{width:90,color:'black'}} value={this.state.activity.hour+':'+this.state.activity.minute}
+                                    style={{width:90,color:'black'}}
+                                     value={this.state.activity.hour+':'+this.state.activity.minute}
                                     editable={false}>
                                 </TextInput>
                                 {timePickerIcon}
@@ -160,12 +259,17 @@ export default class ActivityDetails extends Component {
                                     </View>
                                 </TouchableNativeFeedback>
                                 <TouchableNativeFeedback
-                                    onPress = {()=>this.props.onModalSave(this.state.activity, this.props.selectId)}>
+                                    onPress = {()=>{
+                                        if (this.valdiateInput()){
+                                            this.props.onModalSave(this.state.activity, this.props.selectId)
+                                        }
+                                    }}>
                                     <View style={[styles.button,styles.saveButton]}>
                                         <Text style={{color:'green',fontSize:20}}> Save </Text>
                                     </View>
                                 </TouchableNativeFeedback>
                             </View>
+                            {this.renderError()}
                         </View>
                 </Modal>
             </TouchableWithoutFeedback>
@@ -174,6 +278,12 @@ export default class ActivityDetails extends Component {
 }
 
 const styles = StyleSheet.create({
+    validInput:{
+
+    },
+    invalidInput:{
+        borderColor: 'red',
+    },  
     modalContainer :{
         padding: 22,
         justifyContent:'space-around'

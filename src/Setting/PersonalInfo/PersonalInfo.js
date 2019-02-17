@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Dimensions , StatusBar} from 'react-native';
+import { StyleSheet, Text,View, TouchableHighlight, Dimensions , StatusBar} from 'react-native';
 import PersonalInfoItem from './PersonalInfoItem'
 
 const {width, height} = Dimensions.get('window');
@@ -24,33 +24,36 @@ export default class Logout extends Component {
             StatusBar.setTranslucent(false)
         });
     }
-    changeNickName = (NavName)=>{
-
-    }
+    
 
     changeProfilePicture = (NavName) =>{
 
     }
 
     render() {
-
         return (
             <View style={styles.container}>
-                <PersonalInfoItem goTo={this.changeProfilePicture} navName='ChangeProfilePicture'
-                     icon={null} description='Profile Picture' data="ProfileImage"/>
+                <PersonalInfoItem changer={this.changeProfilePicture} navName='ChangeProfilePicture'
+                        icon={null} description='Profile Picture' data="ProfileImage" />
+
                 <PersonalInfoItem 
-                    goTo={this.changeNickNameHandler} 
-                    navName='changeNickName' 
+                    changer={this.changeNickNameHandler} 
                     data={this.props.screenProps.nickName} 
-                    icon={null} description='Nick Name'/>
+                    icon={null} description='Nick Name'
+                    headerName='Change Nickname'
+                    explanation = 'A catchy nickname helps others to remember you'
+                />
+
                 <PersonalInfoItem 
-                    goTo={this.changeAccountHandler} 
+                    changer={this.changeAccountHandler} 
                     navName='changeAccount' 
                     data={this.props.screenProps.account} 
-                    icon={null} description='Account Id'/>
+                    icon={null} description='Account Id'
+                    />
                 <View style={{height:10}}></View>
                 <PersonalInfoItem icon={null} description="Change Password" data=''
-                    navName={'changePasswordHander'} goTo={this.changePasswordHandler}/>
+                    navName={'changePasswordHander'} changer={this.changePasswordHandler}
+                    />
             </View>
           );
     }

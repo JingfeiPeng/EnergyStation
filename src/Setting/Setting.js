@@ -40,7 +40,6 @@ export default class Setting extends Component {
     }
 
     render() {
-        //{settingPersonIcon}
         return (
             <View style={styles.container}>
                 <ImageBackground 

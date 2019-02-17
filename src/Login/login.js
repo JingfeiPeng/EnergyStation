@@ -37,7 +37,7 @@ export default class Login extends Component {
     LoginHandler = () => {
         Keyboard.dismiss();
         // account then NickName
-        this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.account!=''? this.state.account: 'Test User' );
+        this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.account!=''? this.state.account: 'Test User', this.state.password);
         this.props.navigation.navigate('HomeNav');
     }
 

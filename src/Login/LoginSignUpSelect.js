@@ -7,7 +7,7 @@ import logo from '../../imgs/energyStationLogo.png'
 
 export default class LoginSignUpSelect extends Component {
     state = {
-        DEV_MODE:false
+        DEV_MODE:true
     }
 
 
@@ -22,6 +22,7 @@ export default class LoginSignUpSelect extends Component {
     render() {
 
         return (
+            
             <View style={styles.container}>
                 <StatusBar backgroundColor="white" barStyle="dark-content"/>
                 <Image style={{height:200, width:200}}

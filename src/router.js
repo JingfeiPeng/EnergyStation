@@ -18,6 +18,7 @@ import Register from './Login/Register'
 import LoginSignUpSelect from './Login/LoginSignUpSelect'
 import PersonalInfo from './Setting/PersonalInfo/PersonalInfo'
 import Logout from './Setting/Logout/Logout'
+import ChangeInfoPage from './Setting/PersonalInfo/ChangeInfoPage'
 
 /*
 const homeOptionsDrawNavigator = createDrawerNavigator({
@@ -34,6 +35,9 @@ export const SettingPageNav = createStackNavigator({
     },
     Logout:{
         screen:Logout
+    },
+    ChangeInfoPage:{
+        screen: ChangeInfoPage
     }
 })
 
