@@ -7,7 +7,7 @@ import logo from '../../imgs/energyStationLogo.png'
 
 export default class LoginSignUpSelect extends Component {
     state = {
-        DEV_MODE:true
+        DEV_MODE:false
     }
 
 
