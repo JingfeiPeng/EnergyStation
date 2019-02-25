@@ -7,21 +7,25 @@ import {expandIcon, star, starOutline,excerciseIcon, studyIcon,
 
 export default class ActivityBar extends Component {
     state = {
-      starControlIcon: starOutline,
+      starControlIcon: this.props.activity.complete? star:starOutline,
       activityIcon : "",
     };
     changeStarHandler = () =>{
+      let copyActivity = this.props.activity
       if (this.state.starControlIcon == starOutline){
         this.setState({
           starControlIcon : star,
         });
         this.props.addPoint(this.props.activity.energyPtr);
+        copyActivity.complete = true;
       } else {
         this.setState({
           starControlIcon : starOutline,
         });
+        copyActivity.complete = false;
         this.props.addPoint(-1*this.props.activity.energyPtr);
       }
+      this.props.completeActivityHandler(copyActivity,this.props.identifier);
     }
     // load the icon according to type when started up
     componentWillMount(){

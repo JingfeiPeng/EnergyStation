@@ -122,17 +122,6 @@ export default class Register extends Component {
         .catch(err => {
             console.warn("The error is: "+err)
         })
-        // .then((response)=>{
-        //     console.warn(response);
-        //     noError = false;
-        // })
-        // if ( this.checkRepeatedAccount() == false){
-        //     this.setState({error: "This Account ID is already taken"})
-        //     noError = false;
-        // } else {
-        //     console.warn('success')
-        // }
-
 
 
         if (noError) {

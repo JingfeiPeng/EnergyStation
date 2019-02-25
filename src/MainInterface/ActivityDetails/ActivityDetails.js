@@ -5,7 +5,6 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Excercise, HealthyLife, Play, study, timePickerIcon,backButtonIcon,deleteButtonIcon} from "../../common/utility"
 import Error from '../../common/Error'
 
-
 const {width, height} = Dimensions.get('window');
 
 // activityName:'Excercise',
@@ -15,6 +14,14 @@ const {width, height} = Dimensions.get('window');
 // minute: '30',
 // type: Excercise,
 // complete: false,
+
+// Obtained from: https://stackoverflow.com/questions/10073699/pad-a-number-with-leading-zeros-in-javascript
+function pad(number, width, filler) {
+    filler = filler || '0';
+    number = number + '';
+    return number.length >= width ? number : new Array(width - number.length + 1).join(filler) + number;
+}
+
 export default class ActivityDetails extends Component {
     state = {
         activity: {
@@ -49,7 +56,6 @@ export default class ActivityDetails extends Component {
                 [field]:val
             },
         }))
-        //console.warn(this.state)
     }
 
     // return false if state is invalid,  return true if valid 
@@ -91,6 +97,14 @@ export default class ActivityDetails extends Component {
             })
             return false
         } else {
+            this.setState({      
+                errorMsg:'',
+                validate:{
+                    type: true,
+                    name: true,
+                    length: true,
+                }}
+            )
             return true
         }
     }
@@ -143,6 +157,7 @@ export default class ActivityDetails extends Component {
     
     deleteItself = () =>{
         this.props.deleteActivity(this.props.selectId);
+
         this.props.onModalClosed();
     }
     
@@ -154,7 +169,16 @@ export default class ActivityDetails extends Component {
         }
     }
     
-
+    clearError = () =>{
+        this.setState({      
+            errorMsg:'',
+            validate:{
+                type: true,
+                name: true,
+                length: true,
+            }}
+        );
+    }
     render() {
         let modalContent = null;
         if (this.props.activity !== null){
@@ -204,12 +228,13 @@ export default class ActivityDetails extends Component {
                                 <Text style={styles.textLabel}>Start time</Text>
                                 <TextInput placeholder="10:00" 
                                     style={{width:90,color:'black'}}
-                                     value={this.state.activity.hour+':'+this.state.activity.minute}
+                                     value={pad(this.state.activity.hour, 2)+':'+pad(this.state.activity.minute,2)}
                                     editable={false}>
                                 </TextInput>
                                 {timePickerIcon}
                                 <DateTimePicker
                                     mode='time'
+                                    //date = {new Date(2019,2,24, this.state.hour,this.state.minute)}
                                     datePickerModeAndroid='spinner'
                                     isVisible={this.state.isDateTimePickerVisible}
                                     onConfirm={this._handleDatePicked}
@@ -253,7 +278,9 @@ export default class ActivityDetails extends Component {
                                 <Text style={{marginLeft:10,fontSize:25, fontWeight:'bold',color:'white'}}>View Activity</Text>
                             </View>
                             <View style={{marginRight:10}}>
-                                <TouchableOpacity onPress={this.deleteItself}>
+                                <TouchableOpacity onPress={()=>{
+                                    this.clearError();
+                                    this.deleteItself()}}>
                                     {deleteButtonIcon}
                                 </TouchableOpacity>
                             </View>
@@ -261,7 +288,10 @@ export default class ActivityDetails extends Component {
                         <View style = {styles.modalContainer}>
                             {modalContent}
                             <View style={styles.buttonContainer}>
-                                <TouchableNativeFeedback onPress = {this.props.onModalClosed}>
+                                <TouchableNativeFeedback onPress = {()=>{
+                                        this.clearError();
+                                        this.props.onModalClosed()
+                                    }}>
                                     <View  style={[styles.button,styles.cancelButton]}>
                                         <Text style={{color:'red',fontSize:20}}> Cancel </Text>
                                     </View>

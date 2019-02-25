@@ -5,7 +5,7 @@ import { StyleSheet, Keyboard,Text, View, TextInput,StatusBar,TouchableHighlight
 
 export default class Login extends Component {
     state = {
-        account: "",
+        account: "JefferP3",
         password: ""
     };
 

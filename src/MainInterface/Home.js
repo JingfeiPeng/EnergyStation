@@ -5,6 +5,7 @@ import { StyleSheet, Text, View, ScrollView, StatusBar , Alert} from 'react-nati
 import ActivityBar from './ActivityBar/ActivityBar';
 import Topbar from './Topbar/Topbar';
 import ActivityDetails from './ActivityDetails/ActivityDetails'
+import firebase from 'firebase';
 
 const Excercise = "Excercise";
 const HealthyLife = "Healthy Lifestyle";
@@ -12,49 +13,50 @@ const Play = "Play";
 const study = "study";
 
 export default class Home extends Component {
-    // TODO change the numerical values to Int
+    constructor(props){
+        super(props)
+        this.modalSaveActivityHandler = this.modalSaveActivityHandler.bind(this);
+    }
     state = {
         activityNames: [
-            {
-                activityName:'Excercise',
-                energyPtr:10,
-                length:'20',
-                hour: '12',
-                minute: '30',
-                type: Excercise,
-                complete: false,
-            },
-            {
-                activityName:'Wake up Early',
-                energyPtr:30,
-                length:'10',
-                hour: '14',
-                minute: '30',
-                type: HealthyLife,
-                complete: false,
-            },
-            {
-                activityName:'Talk with Friends',
-                energyPtr:20,
-                length:'60',
-                hour: '16',
-                minute: '30',
-                type: Play,
-                complete: false,
-            },
-            {
-                activityName:'Learn Java RMB',
-                energyPtr:40,
-                length:'60',
-                hour: '16',
-                minute: '30',
-                type: study,
-                complete: false,
-            },
         ],
         selectedActivity : null,
         selectedId : null,
     };
+    
+    componentWillMount(){
+        if (firebase.apps.length == 0){
+            // Initialize Firebase
+            // BUG: LOGIN AGAIN BUT FIREBASE INITIALIZE AGAIN
+            var config = {
+            apiKey: "AIzaSyBPDtqcm1o9wu7T9eKPp-TdEXM-PJqb-YI",
+            authDomain: "energystation-c5f1f.firebaseapp.com",
+            databaseURL: "https://energystation-c5f1f.firebaseio.com",
+            projectId: "energystation-c5f1f",
+            storageBucket: "energystation-c5f1f.appspot.com",
+            messagingSenderId: "690361745753"
+            };
+            firebase.initializeApp(config);
+        }
+    }
+
+    getFirebaseActivitiesNames = ()=>{
+        const identifier = this.props.screenProps.account;
+        firebase.database().ref('activitiesList/'+identifier).on('value',(data)=>{
+            const newActivitiesList = data.toJSON();
+            const activitiesNames = [];
+            for (element in newActivitiesList){
+                activitiesNames.push(newActivitiesList[element]);
+            }
+            this.setState({activityNames:activitiesNames});
+        })
+    }
+    updateFirebaseActivitiesNames = () =>{
+        const identifier = this.props.screenProps.account;
+        firebase.database().ref('activitiesList/'+identifier).set(
+            this.state.activityNames
+        )
+    }
 
     componentDidMount(){
         this._navListener = this.props.navigation.addListener('didFocus', () => {
@@ -62,6 +64,15 @@ export default class Home extends Component {
             StatusBar.setBackgroundColor('#FDBE51');
             StatusBar.setTranslucent(false)
         });
+        // const identifier = this.props.screenProps.account;
+        // firebase.database().ref('activitiesList/'+identifier).set(
+        //     this.state.activityNames
+        // ).then(()=>{
+        //     console.warn('success')
+        // }).catch((err)=>{
+        //     console.warn(err)
+        // })
+        this.getFirebaseActivitiesNames()
     }
 
     componentWillUnmount() {
@@ -84,10 +95,9 @@ export default class Home extends Component {
     }
     
     // saving the activity while using modal
-    // use the index property???
-    modalSaveActivityHandler = (activity, identifer) =>{
+    async modalSaveActivityHandler(activity, identifer){
         if (parseInt(identifer) == parseInt(this.state.activityNames.length)){
-            this.setState(prevState =>{
+            await this.setState(prevState =>{
                 return {
                     activityNames: prevState.activityNames.concat(activity),
                     selectedActivity: null,
@@ -95,7 +105,7 @@ export default class Home extends Component {
                 }
             })
         } else {
-            this.setState({
+            await this.setState({
                 activityNames: this.state.activityNames.map((val, index) =>{
                     if (index == identifer){
                         val.activityName = activity.activityName;
@@ -111,7 +121,7 @@ export default class Home extends Component {
                 selectedId: null, 
             })
         }
-
+        this.updateFirebaseActivitiesNames();
     }
 
     addActivityHandler = () => {
@@ -129,16 +139,52 @@ export default class Home extends Component {
             };
         });
     }
+    // requires: act1 and act2 must have sane field
+    checkIfSameActivity= (act1,act2)=>{
+        let completeSame = true;
+        for (field in act1){
+            if (act1[field] != act2[field]){
+                completeSame = false;
+            }
+        }
+        return completeSame;
+    }
 
     deleteActivityHandler = (index) =>{
-        this.setState(prevState =>{
-            return {
-                activityNames: prevState.activityNames.filter((val,i)=>{
-                    return i != index
-                })
+        // delete item from Firebase: FIND INDEX
+        let firebaseIdentifer = "PLACEHOLDER";
+        const identifier = this.props.screenProps.account;
+        firebase.database().ref('activitiesList/'+identifier).once('value',(activitiesList)=>{
+            // check each element
+            activitiesList = activitiesList.toJSON();
+            for (element in activitiesList){
+                if (this.checkIfSameActivity(this.state.activityNames[index],activitiesList[element])){
+                    firebaseIdentifer = element
+                }
             }
         });
+        //console.warn(firebaseIdentifer);
+        firebase.database().ref('activitiesList/'+identifier+'/'+firebaseIdentifer).remove();
+
+        // this.setState(prevState =>{
+        //     return {
+        //         activityNames: prevState.activityNames.filter((val,i)=>{
+        //             return i != index
+        //         })
+        //     }
+        // });
     }
+    // completeActivityHandler= (index)=>{
+    //     this.setState(prevState =>{
+    //         return {
+    //             activityNames: prevState.activityNames.forEach((element,eleIndex) => {
+    //                 if (eleIndex == index){
+    //                     prevState.activitiesNames[eleIndex]['complete'] = !prevState.activitiesNames[eleIndex]['complete'];
+    //                 }
+    //             })
+    //         }
+    //     });
+    // }
 
     modalCloseHandler = () =>{
         this.setState({
@@ -171,6 +217,7 @@ export default class Home extends Component {
                             activity = {activity}
                             selectHandler ={this.activitySelectedHandler}
                             addPoint = {this.addPointHandler}
+                            completeActivityHandler = {this.modalSaveActivityHandler}
                         />)
                     })
                 }
@@ -184,6 +231,6 @@ export default class Home extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ddd9d9'
+        backgroundColor: '#e8dcdc'
     }
 });
