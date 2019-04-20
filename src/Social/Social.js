@@ -1,9 +1,16 @@
 
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, TextInput, StatusBar , Image} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons'
 
 
 export default class Social extends Component {
+    static navigationOptions = {
+        drawerIcon:({tintColor})=>(
+            <Icon name='ios-people' style={{fontSize:24,color:tintColor}}/>
+        )
+    }
+
     state = {
 
     };

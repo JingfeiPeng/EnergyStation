@@ -40,6 +40,8 @@ export default class Home extends Component {
         }
     }
 
+    // Need to Change these
+
     getFirebaseActivitiesNames = ()=>{
         const identifier = this.props.screenProps.account;
         firebase.database().ref('activitiesList/'+identifier).on('value',(data)=>{
@@ -72,7 +74,7 @@ export default class Home extends Component {
         // }).catch((err)=>{
         //     console.warn(err)
         // })
-        this.getFirebaseActivitiesNames()
+        // this.getFirebaseActivitiesNames()
     }
 
     componentWillUnmount() {
@@ -93,9 +95,31 @@ export default class Home extends Component {
             };
         });
     }
+
+    /*
+    let user = {
+        account :  'LOL'
+        password:  'HEHE'
+        city : "Toronto"
+    };
+    AsyncStorage.setItem('user', JSON.stringify(user)); // 'user' is key
+
+    // fetch data
+     fetchData = async () =>{
+         try {
+             let user  = await AsyncStorage.getItem('user');
+             let parsed = JSON.parse(user);
+             alert(parsed.account)
+         }
+         catch (error){
+            alert(error)
+         }
+     }
+
+    */
     
     // saving the activity while using modal
-    async modalSaveActivityHandler(activity, identifer){
+    modalSaveActivityHandler= async (activity, identifer)=>{
         if (parseInt(identifer) == parseInt(this.state.activityNames.length)){
             await this.setState(prevState =>{
                 return {

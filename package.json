@@ -8,6 +8,7 @@
     "run-device": "react-native bundle --platform android --dev true --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android"
   },
   "dependencies": {
+    "firebase": "^5.0.3",
     "npm": "^6.1.0",
     "prop-types": "^15.6.2",
     "react": "16.3.1",

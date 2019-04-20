@@ -1,11 +1,12 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View,} from 'react-native'
+import { StyleSheet,Image,View, Text, SafeAreaView,ScrollView,Dimensions} from 'react-native'
 import { 
     createSwitchNavigator, 
     createStackNavigator,
     createBottomTabNavigator,
-    createDrawerNavigator 
+    createDrawerNavigator,
+    DrawerItems
 } from 'react-navigation'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -19,12 +20,10 @@ import LoginSignUpSelect from './Login/LoginSignUpSelect'
 import PersonalInfo from './Setting/PersonalInfo/PersonalInfo'
 import Logout from './Setting/Logout/Logout'
 import ChangeInfoPage from './Setting/PersonalInfo/ChangeInfoPage'
+import Maps from './Social/maps' 
 
-/*
-const homeOptionsDrawNavigator = createDrawerNavigator({
-    addNewActivty: 
-})*/
 
+const {width,height}= Dimensions.get('window')
 
 export const SettingPageNav = createStackNavigator({
     Setting:{
@@ -41,10 +40,35 @@ export const SettingPageNav = createStackNavigator({
     }
 })
 
+const customDrawerComponent = (props) =>(
+    <SafeAreaView>
+        <View style={{height:150,backgroundColor:'white',alignItems:'center',justifyContent:'center'}}>
+            <Image 
+                source={{uri:'https://cdn.shopify.com/s/files/1/0797/1877/products/NieRAutomata_2B_Cosplay_Costume_S13146_4.jpg?v=1542684729'}}
+                style={{height:150,width:150}}
+            />
+        </View>
+        <ScrollView>
+            <DrawerItems {...props}/>
+        </ScrollView>
+    </SafeAreaView>
+)
+
+export const socialNav = createDrawerNavigator({
+    Social: {screen: Social},
+    Maps:{screen: Maps}
+},{
+    contentComponent: customDrawerComponent,
+    drawerWidth:width*0.5,
+    contentOptions:{
+        activeTintColor:'orange'
+    }
+})
+
 export const HomeNav = createBottomTabNavigator({
     Home: { screen: Home},
     Statistics: { screen: Statistics,},
-    Social : { screen: Social,},
+    Social : { screen: socialNav,},
     Setting:{ screen : SettingPageNav,}
 },{
     initialRouteName: 'Home',   
@@ -88,6 +112,7 @@ export const HomeNav = createBottomTabNavigator({
         }
     }
 })
+
 
 //react-redux
 

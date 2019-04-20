@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import { StyleSheet,StatusBar, Text, View, TextInput,Keyboard, TouchableHighlight , TouchableWithoutFeedback} from 'react-native';
 import Error from "../common/Error"
-
+import {registerAcocuntURL} from '../webService/urlLinks'
 
 export default class Register extends Component {
     constructor(props){
@@ -10,7 +10,7 @@ export default class Register extends Component {
         this.registerAccountHandler = this.registerAccountHandler.bind(this);
     }
     state = {
-        account: "JefferP",
+        account: "JefferP@gmail.com",
         accountValid: true,
         nickName:'Jeff Peng',
         nickNameValid: true,
@@ -65,6 +65,10 @@ export default class Register extends Component {
             })
         }
     }
+
+    componentDidMount(){
+          
+    }
     
     repeatPasswordChangeHandler = val =>{
         this.setState({
@@ -73,13 +77,13 @@ export default class Register extends Component {
     }
 
 
-    async registerAccountHandler(){
+    registerAccountHandler(){
         let noError = true;
         if (this.state.account.length > 20){
             this.setState({ error: 'Exceeded max length requirement for account', accountValid: false })
             noError = false;
         }  else if (this.state.account.length < 6){
-            this.setState({error:"account name must be at least 6 characters", accountValid: false })
+            this.setState({error:"Email must be at least 6 characters", accountValid: false })
             noError = false;
         }else if (this.state.nickName.length == 0){
             this.setState({error: 'NickName can\'t be empty', accountValid: true,nickNameValid: false});
@@ -106,42 +110,29 @@ export default class Register extends Component {
                 noError = false;
             }
         }
-        
-        await fetch("https://energystation-c5f1f.firebaseio.com/accounts.json")
-        .then( (Response) => Response.json())
-        .then( (responseJson)=>{
-            for (const identifier in responseJson){
-                if (responseJson[identifier]["account"] == this.state.account){
-                    this.setState({error: "This Account ID is already taken"})
-                    noError = false;
-                    break;
-                }
-            }
-            // passed, not repeated 
-        })
-        .catch(err => {
-            console.warn("The error is: "+err)
-        })
-
 
         if (noError) {
-            const accountData = {
-                account : this.state.account,
-                password : this.state.password,
-            };
-            fetch("https://energystation-c5f1f.firebaseio.com/accounts.json",{
+            fetch(registerAcocuntURL,{
                 method: 'POST',
-                body: JSON.stringify(accountData),
-            })
-            .catch(err => console.warn(err))
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: this.state.nickName,
+                    email : this.state.account,
+                    password : this.state.password,
+                }),
+              })
             .then( (res) => res.json())
             .then(parsedRes => {
                 //console.warn(parsedRes);
-            });
-            this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.nickName);
-            this.props.navigation.navigate('HomeNav',{
-                userName: this.state.account,
-            });
+                this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.nickName);
+                this.props.navigation.navigate('HomeNav',{
+                    userName: this.state.account,
+                });
+            })
+            .catch(err => console.warn("FOUND ERROR:"+err));
         }
     }
 
@@ -165,7 +156,7 @@ export default class Register extends Component {
                     <Text style={styles.title}>Welcome to EnergyStation</Text>
                     </View>
                     <View style={styles.account}>
-                        <Text style={styles.input}>Account</Text>
+                        <Text style={styles.input}>Email</Text>
                         <View style={this.state.accountValid == false ? styles.invalidInput: styles.validInput }>
                             <TextInput
                                 underlineColorAndroid = 'transparent'
@@ -180,7 +171,6 @@ export default class Register extends Component {
                         <View style={this.state.nickNameValid == false ? styles.invalidInput: styles.validInput }>
                             <TextInput
                                 underlineColorAndroid = 'transparent'
-                                secureTextEntry={true}
                                 value = {this.state.nickName}
                                 placeholder='Joseph Stalin'
                                 onChangeText={this.nickNameChangeHandler}
