@@ -5,19 +5,17 @@ import Icon from  'react-native-vector-icons/Ionicons';
 
 // props: errorMsg
 
-export default class  Error extends Component {
-  render() {
+const Error = (props) =>{
     return (
         <View>
             <View style={{alignItems:'center'}}>
                 <Icon name="ios-warning" size={40}/>
             </View>
             <Text style={styles.ErrorStyle}>
-                {this.props.errorMsg}
+                {props.errorMsg}
             </Text>
         </View>
-    );
-  }
+  );
 }
 
 
@@ -28,3 +26,5 @@ const styles = StyleSheet.create({
       textAlign: 'center'
   }
 });
+
+export default Error; 

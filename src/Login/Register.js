@@ -1,8 +1,9 @@
 
 import React, {Component} from 'react';
-import { StyleSheet,StatusBar, Text, View, TextInput,Keyboard, TouchableHighlight , TouchableWithoutFeedback} from 'react-native';
+import { StyleSheet,StatusBar, Text, View, TextInput,Keyboard, TouchableHighlight , TouchableWithoutFeedback,CheckBox} from 'react-native';
 import Error from "../common/Error"
 import {registerAcocuntURL} from '../webService/urlLinks'
+import DataEntry from './dataEntry'
 
 export default class Register extends Component {
     constructor(props){
@@ -17,6 +18,7 @@ export default class Register extends Component {
         password: "StarterHack2019",
         passwordValid: true,
         passwordRepeat: "StarterHack2019",
+        rememberLogin: false,
         error: ''
     };
 
@@ -124,15 +126,26 @@ export default class Register extends Component {
                     password : this.state.password,
                 }),
               })
-            .then( (res) => res.json())
+            .then( (res) => {
+                if (res.ok == false ) return res.text();
+                // get JWT token
+                const token = res.headers.map['x-auth-token'][0];
+                // store token if remember login
+                return res.json()
+            })
             .then(parsedRes => {
-                //console.warn(parsedRes);
+                // handle exception case
+                if (typeof parsedRes == 'string'){
+                    throw parsedRes;
+                }
                 this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.nickName);
                 this.props.navigation.navigate('HomeNav',{
                     userName: this.state.account,
                 });
             })
-            .catch(err => console.warn("FOUND ERROR:"+err));
+            .catch(err => {
+                this.setState({error: `Found Error: ${err}`})
+            });
         }
     }
 
@@ -153,54 +166,42 @@ export default class Register extends Component {
                 <View style={styles.container}>
                     <StatusBar backgroundColor="#FDBE51" barStyle="light-content" animated={true}/>
                     <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Welcome to EnergyStation</Text>
+                        <Text style={styles.title}>Welcome to EnergyStation</Text>
                     </View>
-                    <View style={styles.account}>
-                        <Text style={styles.input}>Email</Text>
-                        <View style={this.state.accountValid == false ? styles.invalidInput: styles.validInput }>
-                            <TextInput
-                                underlineColorAndroid = 'transparent'
-                                value = {this.state.account}
-                                placeholder="randomUser123"
-                                onChangeText={this.accountChangeHandler}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.account}>
-                        <Text style={styles.input}>Nick Name: </Text>
-                        <View style={this.state.nickNameValid == false ? styles.invalidInput: styles.validInput }>
-                            <TextInput
-                                underlineColorAndroid = 'transparent'
-                                value = {this.state.nickName}
-                                placeholder='Joseph Stalin'
-                                onChangeText={this.nickNameChangeHandler}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.account}>
-                        <Text style={styles.input}>Password</Text>
-                        <View style={this.state.passwordValid == false ? styles.invalidInput: styles.validInput }>
-                            <TextInput
-                                underlineColorAndroid = 'transparent'
-                                secureTextEntry={true}
-                                value = {this.state.password}
-                                placeholder='password'
-                                onChangeText={this.passwordChangeHandler}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.account}>
-                        <Text style={styles.input}>Repeat Password</Text>
-                        <View style={this.state.passwordValid == false ? styles.invalidInput: styles.validInput }>
-                        <TextInput
-                            underlineColorAndroid = 'transparent'
-                            secureTextEntry={true}
-                            value = {this.state.passwordRepeat}
-                            style={{ width: '70%'}}
-                            placeholder='Repeat password'
-                            onChangeText={this.repeatPasswordChangeHandler}
-                        />
-                        </View>
+                    <DataEntry
+                        title ={'Email'}
+                        valid = {this.state.accountValid}
+                        data = {this.state.account}
+                        changeValueHandler = {this.accountChangeHandler}
+                        placeholder = '123@gmail.com'
+                    />
+                    <DataEntry
+                        title ={'Nick Name'}
+                        valid = {this.state.nickNameValid}
+                        data = {this.state.nickName}
+                        changeValueHandler = {this.nickNameChangeHandler}
+                        placeholder = 'Jeff Peng'
+                    />
+                    <DataEntry
+                        title ={'Password'}
+                        valid = {this.state.passwordValid}
+                        data = {this.state.password}
+                        changeValueHandler = {this.passwordChangeHandler}
+                        placeholder = 'password'
+                        secureTextEntry = {true}
+                    />
+                    <DataEntry
+                        title ={'Repeat Password'}
+                        valid = {this.state.passwordValid}
+                        data = {this.state.passwordRepeat}
+                        changeValueHandler = {this.repeatPasswordChangeHandler}
+                        placeholder = 'password'
+                        secureTextEntry = {true}
+                    />
+                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                        <Text style={styles.input}>Remember Login</Text>
+                        <CheckBox value={this.state.rememberLogin}
+                            onValueChange={(val)=>this.setState({rememberLogin: val})}/>
                     </View>
                     <View style={styles.account}>
                         <TouchableHighlight style={{paddingTop:10}} onPress={this.registerAccountHandler} 

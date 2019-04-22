@@ -74,6 +74,7 @@ export default class Home extends Component {
         // }).catch((err)=>{
         //     console.warn(err)
         // })
+        
         // this.getFirebaseActivitiesNames()
     }
 
