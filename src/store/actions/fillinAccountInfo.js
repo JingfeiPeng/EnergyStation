@@ -1,10 +1,10 @@
 import {FILLINACCOUNTINFO} from './actionTypes';
 
-export const fillinAccountInfo = (account,nickName,password) =>{
+export const fillinAccountInfo = (account,nickName,token) =>{
     return {
         type: FILLINACCOUNTINFO,
         account: account,
         nickName: nickName,
-        password:password
+        token: token
     }
 }

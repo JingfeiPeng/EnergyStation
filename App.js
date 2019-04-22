@@ -23,10 +23,11 @@ class  App extends Component {
 
 const mapStateToProps = (state) =>{
   return {
-    account: state.generalReducer.account,
-    nickName: state.generalReducer.nickName,
-    curPoint: state.generalReducer.curPoint,
-    password: state.generalReducer.password,
+    // account: state.generalReducer.account,
+    // nickName: state.generalReducer.nickName,
+    // curPoint: state.generalReducer.curPoint,
+    // password: state.generalReducer.password,
+    ...state.generalReducer
   }
 }
 
@@ -34,7 +35,7 @@ const mapStateToProps = (state) =>{
 const mapDispatchToProps = dispatch =>{
   return {
     onChangeEnergyPtr: (ptrAmt)=> dispatch(changeEnergyPtr(ptrAmt)),
-    onFillinAccountInfo: (account,nickName,password) => dispatch(fillinAccountInfo(account,nickName,password)),
+    onFillinAccountInfo: (account,nickName,token) => dispatch(fillinAccountInfo(account,nickName,token)),
   }
 } 
 

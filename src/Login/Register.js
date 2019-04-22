@@ -132,13 +132,19 @@ export default class Register extends Component {
                 const token = res.headers.map['x-auth-token'][0];
                 // store token if remember login
                 return res.json()
+                    .then(obj =>{
+                        return {
+                            ...obj,
+                            token: token
+                        }
+                    }).catch(err => console.warn(err))
             })
             .then(parsedRes => {
                 // handle exception case
                 if (typeof parsedRes == 'string'){
                     throw parsedRes;
                 }
-                this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.nickName);
+                this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.nickName,parsedRes.token);
                 this.props.navigation.navigate('HomeNav',{
                     userName: this.state.account,
                 });

@@ -66,6 +66,7 @@ export default class Home extends Component {
             StatusBar.setBackgroundColor('#FDBE51');
             StatusBar.setTranslucent(false)
         });
+        console.warn(this.props.screenProps)
         // const identifier = this.props.screenProps.account;
         // firebase.database().ref('activitiesList/'+identifier).set(
         //     this.state.activityNames
@@ -74,7 +75,7 @@ export default class Home extends Component {
         // }).catch((err)=>{
         //     console.warn(err)
         // })
-        
+
         // this.getFirebaseActivitiesNames()
     }
 
