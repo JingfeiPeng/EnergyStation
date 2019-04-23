@@ -1,11 +1,12 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, ScrollView, StatusBar , Alert} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, StatusBar , AsyncStorage} from 'react-native';
 
 import ActivityBar from './ActivityBar/ActivityBar';
 import Topbar from './Topbar/Topbar';
 import ActivityDetails from './ActivityDetails/ActivityDetails'
 import firebase from 'firebase';
+import {jwtToken} from '../store/actions/fillinAccountInfo'
 
 const Excercise = "Excercise";
 const HealthyLife = "Healthy Lifestyle";
@@ -66,7 +67,10 @@ export default class Home extends Component {
             StatusBar.setBackgroundColor('#FDBE51');
             StatusBar.setTranslucent(false)
         });
-        console.warn(this.props.screenProps)
+        AsyncStorage.getItem(jwtToken)
+        .then(res => console.warn(res))
+
+        // console.warn(this.props.screenProps)
         // const identifier = this.props.screenProps.account;
         // firebase.database().ref('activitiesList/'+identifier).set(
         //     this.state.activityNames

@@ -1,12 +1,15 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Keyboard,Text, View, TextInput,StatusBar,TouchableHighlight, TouchableWithoutFeedback} from 'react-native';
+import { StyleSheet, Keyboard,Text, View, TextInput,StatusBar,TouchableHighlight,CheckBox,TouchableWithoutFeedback,Alert} from 'react-native';
+import {loginURL} from '../webService/urlLinks'
+import { connect } from 'react-redux';
+import {fillinAccountInfo} from '../store/actions/index'
 
-
-export default class Login extends Component {
+class Login extends Component {
     state = {
-        account: "JefferP3",
-        password: ""
+        account: "JefferP@gmail.com",
+        password: "StarterHack2019",
+        rememberLogin: false,
     };
 
     static navigationOptions = ({ navigation }: { navigation: any }) => {
@@ -36,9 +39,48 @@ export default class Login extends Component {
 
     LoginHandler = () => {
         Keyboard.dismiss();
-        // account then NickName
-        this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.account!=''? this.state.account: 'Test User', this.state.password);
-        this.props.navigation.navigate('HomeNav');
+        fetch(loginURL,{
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: this.state.account,
+                password: this.state.password
+            }),
+        })
+        .then(res => {
+            if (res.ok) return res.text();
+            // Login Failed
+            return res.text()
+            .then((res)=>{ 
+                return {
+                    message: res,
+                    invalid: true,
+                }
+            })
+            .catch(err => console.warn(err))
+
+        })
+        .then(res =>{
+            if (res.invalid == true){
+                throw new Error(res.message)
+            }
+            // account then NickName
+            this.props.onFillinAccountInfo(this.state.account,this.state.account!=''? this.state.account: 'Test User', res, this.state.rememberLogin);
+            this.props.navigation.navigate('HomeNav');
+        })
+        .catch(err => {
+            Alert.alert(
+                'Authentication Unsuccessful',
+                err.message,
+                [
+                  {text: 'OK'},
+                ],
+                {cancelable: true},
+              );
+        })
     }
 
 
@@ -52,7 +94,7 @@ export default class Login extends Component {
                     <Text style={styles.title}>Login to EnergyStation</Text>
                     </View>
                     <View style={styles.account}>
-                        <Text style={styles.input}>Account</Text>
+                        <Text style={styles.input}>Email</Text>
                         <TextInput
                             style={{ width: '70%'}}
                             value = {this.state.account}
@@ -70,6 +112,11 @@ export default class Login extends Component {
                         onChangeText={this.passwordChangeHandler}
                     />
                     </View>
+                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                        <Text style={styles.input}>Remember Login</Text>
+                        <CheckBox value={this.state.rememberLogin}
+                            onValueChange={(val)=>this.setState({rememberLogin: val})}/>
+                    </View>
                     <View style={styles.account}>
                         <TouchableHighlight onPress={this.LoginHandler} 
                             underlayColor="white">
@@ -84,6 +131,14 @@ export default class Login extends Component {
     }
 }
 
+//dispatcher
+const mapDispatchToProps = dispatch =>{
+    return {
+      onFillinAccountInfo: (account,nickName,token,saveToLocal) => dispatch(fillinAccountInfo(account,nickName,token,saveToLocal)),
+    }
+  } 
+  
+export default connect(null, mapDispatchToProps)(Login);
 
 
 

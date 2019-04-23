@@ -144,7 +144,7 @@ export default class Register extends Component {
                 if (typeof parsedRes == 'string'){
                     throw parsedRes;
                 }
-                this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.nickName,parsedRes.token);
+                this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.nickName,parsedRes.token,this.state.rememberLogin);
                 this.props.navigation.navigate('HomeNav',{
                     userName: this.state.account,
                 });
