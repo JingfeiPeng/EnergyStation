@@ -1,11 +1,16 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity , Image, StatusBar} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity ,AsyncStorage, Image, StatusBar} from 'react-native';
+import {fillinAccountInfo} from '../store/actions/index'
+import { connect } from 'react-redux';
+var jwtDecode = require('jwt-decode');
+// import jwt from 'jsonwebtoken';
 
 import logo from '../../imgs/energyStationLogo.png' 
+
 // logo is an object that contains the path
 
-export default class LoginSignUpSelect extends Component {
+class LoginSignUpSelect extends Component {
     state = {
         DEV_MODE:false
     }
@@ -17,6 +22,17 @@ export default class LoginSignUpSelect extends Component {
 
     componentDidMount(){
         if (this.state.DEV_MODE) this.props.navigation.navigate('HomeNav');
+        AsyncStorage.getItem('jwtToken')
+        .then(JWTToken =>{
+            if (JWTToken.length > 2){
+                // decrpt the token
+                let decoded = jwtDecode(JWTToken)
+                //Update User Info
+                this.props.fillinAccountInfo(decoded.email,decoded.name,JWTToken);
+                this.props.navigation.navigate('HomeNav');
+            }
+        })
+        .catch(err => console.warn(err))
     }
 
     render() {
@@ -49,6 +65,15 @@ export default class LoginSignUpSelect extends Component {
           );
     }
 }
+
+//dispatcher
+const mapDispatchToProps = dispatch =>{
+    return {
+        fillinAccountInfo: (account,nickName,token) => dispatch(fillinAccountInfo(account,nickName,token)),
+    }
+  } 
+  
+export default connect(null, mapDispatchToProps)(LoginSignUpSelect);
 
 const styles = StyleSheet.create({
     container: {

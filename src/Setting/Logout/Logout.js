@@ -1,7 +1,8 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Dimensions , StatusBar} from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage, Dimensions , StatusBar} from 'react-native';
 import SettingItem from '../SettingItems/SettingItem'
+import {jwtToken} from '../../store/actions/fillinAccountInfo'
 
 import {settingsIcon,rightArrowIcon} from '../../common/utility'
 
@@ -29,8 +30,19 @@ export default class Logout extends Component {
     }
 
     logoutHandler=(navName)=>{
-        this.props.navigation.navigate('LoginSignUpSelect');
-    }
+        AsyncStorage.getItem(jwtToken)
+            .then(res => {
+                if (res){
+                    AsyncStorage.setItem(jwtToken,JSON.stringify(''))
+                    .then( () =>{
+                        this.props.navigation.navigate('LoginSignUpSelect');
+                    })
+                } else {
+                    this.props.navigation.navigate('LoginSignUpSelect');
+                }
+            })
+            .catch(err => console.warn(err))    
+        }
 
     render() {
         return (

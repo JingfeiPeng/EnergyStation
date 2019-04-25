@@ -5,13 +5,8 @@ import { StyleSheet, Text, View, ScrollView, StatusBar , AsyncStorage} from 'rea
 import ActivityBar from './ActivityBar/ActivityBar';
 import Topbar from './Topbar/Topbar';
 import ActivityDetails from './ActivityDetails/ActivityDetails'
-import firebase from 'firebase';
 import {jwtToken} from '../store/actions/fillinAccountInfo'
 
-const Excercise = "Excercise";
-const HealthyLife = "Healthy Lifestyle";
-const Play = "Play";
-const study = "study";
 
 export default class Home extends Component {
     constructor(props){
@@ -25,23 +20,7 @@ export default class Home extends Component {
         selectedId : null,
     };
     
-    componentWillMount(){
-        if (firebase.apps.length == 0){
-            // Initialize Firebase
-            // BUG: LOGIN AGAIN BUT FIREBASE INITIALIZE AGAIN
-            var config = {
-            apiKey: "AIzaSyBPDtqcm1o9wu7T9eKPp-TdEXM-PJqb-YI",
-            authDomain: "energystation-c5f1f.firebaseapp.com",
-            databaseURL: "https://energystation-c5f1f.firebaseio.com",
-            projectId: "energystation-c5f1f",
-            storageBucket: "energystation-c5f1f.appspot.com",
-            messagingSenderId: "690361745753"
-            };
-            firebase.initializeApp(config);
-        }
-    }
 
-    // Need to Change these
 
     getFirebaseActivitiesNames = ()=>{
         const identifier = this.props.screenProps.account;
@@ -101,28 +80,6 @@ export default class Home extends Component {
             };
         });
     }
-
-    /*
-    let user = {
-        account :  'LOL'
-        password:  'HEHE'
-        city : "Toronto"
-    };
-    AsyncStorage.setItem('user', JSON.stringify(user)); // 'user' is key
-
-    // fetch data
-     fetchData = async () =>{
-         try {
-             let user  = await AsyncStorage.getItem('user');
-             let parsed = JSON.parse(user);
-             alert(parsed.account)
-         }
-         catch (error){
-            alert(error)
-         }
-     }
-
-    */
     
     // saving the activity while using modal
     modalSaveActivityHandler= async (activity, identifer)=>{

@@ -1,9 +1,10 @@
 
 import React, {Component} from 'react';
-import { StyleSheet,StatusBar, Text, View, TextInput,Keyboard, TouchableHighlight , TouchableWithoutFeedback,CheckBox} from 'react-native';
+import { StyleSheet,StatusBar, Text, View, AsyncStorage,Keyboard, TouchableHighlight , TouchableWithoutFeedback,CheckBox} from 'react-native';
 import Error from "../common/Error"
 import {registerAcocuntURL} from '../webService/urlLinks'
 import DataEntry from './dataEntry'
+import {jwtToken} from '../store/actions/fillinAccountInfo'
 
 export default class Register extends Component {
     constructor(props){
@@ -69,7 +70,7 @@ export default class Register extends Component {
     }
 
     componentDidMount(){
-          
+
     }
     
     repeatPasswordChangeHandler = val =>{
