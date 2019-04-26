@@ -38,8 +38,8 @@ class Home extends Component {
             }
         })
         .then(res => {
-            console.warn(res)
-            // this.setState({activityList:res}, () => {console.warn(this.state.activityList)})
+            // console.warn(res)
+            this.setState({activityList:res}, () => {console.warn(this.state.activityList)})
         })
         .catch(err => console.warn(err))
         // firebase.database().ref('activitiesList/'+identifier).on('value',(data)=>{

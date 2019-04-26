@@ -5,11 +5,29 @@ import {expandIcon, star, starOutline,excerciseIcon, studyIcon,
   healthyIcon, playIcon, Excercise, HealthyLife, Play, study } from "../../common/utility"
 
 
+function decideIconType(type){
+  switch(type){
+    case Excercise:
+      return excerciseIcon;
+    case study:
+      return studyIcon;
+      break;
+    case HealthyLife:
+      return healthyIcon;
+      break;
+    case Play:
+      return playIcon;
+    default:
+      return null;
+  }
+}
+
 export default class ActivityBar extends Component {
     state = {
       starControlIcon: this.props.activity.complete? star:starOutline,
       activityIcon : "",
     };
+
     changeStarHandler = () =>{
       let copyActivity = this.props.activity
       if (this.state.starControlIcon == starOutline){
@@ -27,51 +45,27 @@ export default class ActivityBar extends Component {
       }
       this.props.completeActivityHandler(copyActivity,this.props.identifier);
     }
+
     // load the icon according to type when started up
     componentWillMount(){
-      switch(this.props.activity.type){
-        case Excercise:
-          this.setState({activityIcon: excerciseIcon});
-          break;
-        case study:
-          this.setState({activityIcon: studyIcon});
-          break;
-        case HealthyLife:
-          this.setState({activityIcon: healthyIcon});
-          break;
-        case Play:
-          this.setState({activityIcon:playIcon});
-          break;
-      }
+      const icon = decideIconType(this.props.activity.type);
+      this.setState({activityIcon: icon});
     }
+
     // load different Icon when state Changes
     componentWillReceiveProps(){
-      switch(this.props.activity.type){
-        case Excercise:
-          this.setState({activityIcon: excerciseIcon});
-          break;
-        case study:
-          this.setState({activityIcon: studyIcon});
-          break;
-        case HealthyLife:
-          this.setState({activityIcon: healthyIcon});
-          break;
-        case Play:
-          this.setState({activityIcon:playIcon});
-          break;
-      }
+      const icon = decideIconType(this.props.activity.type);
+      this.setState({activityIcon: icon});
     }
 
     //selectHandler
     render() {
-        const {activityName, energyPtr, length, hour, minute} = this.props.activity;
+        const {ActivityName, energyPtr, length, startTime} = this.props.activity;
         return (
           <View>
-            
               <View style={styles.container}>
                   <View style={styles.titleBar}>
-                    <Text style={styles.title}> {this.state.activityIcon} {activityName} - {hour}:{minute}  </Text>
-                    
+                    <Text style={styles.title}> {this.state.activityIcon} {ActivityName} - {startTime}  </Text>
                     <View style={{flexDirection:'row',width:80, justifyContent:"space-around"}}>
                       <TouchableHighlight onPress={()=> this.changeStarHandler()}>
                         {this.state.starControlIcon}
@@ -81,8 +75,6 @@ export default class ActivityBar extends Component {
                       </TouchableHighlight>
                     </View>
                   </View>
-
-
                   <View style={styles.descriptions}>
                       <Text>Length: <Text style={styles.length}> {length} mins </Text></Text>
                   </View>
