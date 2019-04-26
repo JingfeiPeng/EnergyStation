@@ -6,38 +6,54 @@ import ActivityBar from './ActivityBar/ActivityBar';
 import Topbar from './Topbar/Topbar';
 import ActivityDetails from './ActivityDetails/ActivityDetails'
 import {jwtToken} from '../store/actions/fillinAccountInfo'
+import {activitiesURL} from '../webService/urlLinks'
+import { connect } from 'react-redux';
 
 
-export default class Home extends Component {
+
+class Home extends Component {
     constructor(props){
         super(props)
         this.modalSaveActivityHandler = this.modalSaveActivityHandler.bind(this);
     }
     state = {
-        activityNames: [
+        activityList: [
         ],
         selectedActivity : null,
         selectedId : null,
     };
-    
-
-
-    getFirebaseActivitiesNames = ()=>{
-        const identifier = this.props.screenProps.account;
-        firebase.database().ref('activitiesList/'+identifier).on('value',(data)=>{
-            const newActivitiesList = data.toJSON();
-            const activitiesNames = [];
-            for (element in newActivitiesList){
-                activitiesNames.push(newActivitiesList[element]);
-            }
-            this.setState({activityNames:activitiesNames});
+    //Incorrect: N9W
+    // Correct: snjw 
+    fetchAllActivities = ()=>{
+        console.warn(this.props.token)
+        fetch(activitiesURL,{  
+            method:'GET',
+            headers: { 'X-Auth-Token': this.props.token }
         })
+        .then(res => {
+            if (res.ok){
+                return res.json();
+            } else {
+                return res.text()
+            }
+        })
+        .then(res => {
+            console.warn(res)
+            // this.setState({activityList:res}, () => {console.warn(this.state.activityList)})
+        })
+        .catch(err => console.warn(err))
+        // firebase.database().ref('activitiesList/'+identifier).on('value',(data)=>{
+        //     const newActivitiesList = data.toJSON();
+        //     const activitiesNames = [];
+        //     for (element in newActivitiesList){
+        //         activitiesNames.push(newActivitiesList[element]);
+        //     }
+        //     this.setState({activityList:activitiesNames});
+        // })
     }
-    updateFirebaseActivitiesNames = () =>{
-        const identifier = this.props.screenProps.account;
-        firebase.database().ref('activitiesList/'+identifier).set(
-            this.state.activityNames
-        )
+
+    updateActivity = () =>{
+        console.warn("update an activity")
     }
 
     componentDidMount(){
@@ -46,20 +62,7 @@ export default class Home extends Component {
             StatusBar.setBackgroundColor('#FDBE51');
             StatusBar.setTranslucent(false)
         });
-        AsyncStorage.getItem(jwtToken)
-        .then(res => console.warn(res))
-
-        // console.warn(this.props.screenProps)
-        // const identifier = this.props.screenProps.account;
-        // firebase.database().ref('activitiesList/'+identifier).set(
-        //     this.state.activityNames
-        // ).then(()=>{
-        //     console.warn('success')
-        // }).catch((err)=>{
-        //     console.warn(err)
-        // })
-
-        // this.getFirebaseActivitiesNames()
+        this.fetchAllActivities()
     }
 
     componentWillUnmount() {
@@ -67,13 +70,13 @@ export default class Home extends Component {
     }
 
     addPointHandler = (val) =>{
-        this.props.screenProps.onChangeEnergyPtr(val);
+        this.props.onChangeEnergyPtr(val);
     }
 
     activitySelectedHandler = key => {
         this.setState(prevState => {
             return {
-                selectedActivity: prevState.activityNames.find((place,i) =>{
+                selectedActivity: prevState.activityList.find((place,i) =>{
                     return i === key; 
                 }),
                 selectedId: key,
@@ -83,17 +86,17 @@ export default class Home extends Component {
     
     // saving the activity while using modal
     modalSaveActivityHandler= async (activity, identifer)=>{
-        if (parseInt(identifer) == parseInt(this.state.activityNames.length)){
+        if (parseInt(identifer) == parseInt(this.state.activityList.length)){
             await this.setState(prevState =>{
                 return {
-                    activityNames: prevState.activityNames.concat(activity),
+                    activityList: prevState.activityList.concat(activity),
                     selectedActivity: null,
                     selectedId: null,
                 }
             })
         } else {
             await this.setState({
-                activityNames: this.state.activityNames.map((val, index) =>{
+                activityList: this.state.activityList.map((val, index) =>{
                     if (index == identifer){
                         val.activityName = activity.activityName;
                         val.energyPtr = activity.energyPtr;
@@ -108,7 +111,7 @@ export default class Home extends Component {
                 selectedId: null, 
             })
         }
-        this.updateFirebaseActivitiesNames();
+        this.updateActivity();
     }
 
     addActivityHandler = () => {
@@ -118,14 +121,14 @@ export default class Home extends Component {
                     activityName:'',
                     energyPtr:'',
                     length:'',
-                    hour: new Date().getHours(),
-                    minute: new Date().getMinutes(),
+                    startTime: new Date().getHours() +":"+ new Date().getMinutes(),
                     type: '',
                 },
-                selectedId: prevState.activityNames.length,
+                selectedId: prevState.activityList.length,
             };
         });
     }
+
     // requires: act1 and act2 must have sane field
     checkIfSameActivity= (act1,act2)=>{
         let completeSame = true;
@@ -140,38 +143,20 @@ export default class Home extends Component {
     deleteActivityHandler = (index) =>{
         // delete item from Firebase: FIND INDEX
         let firebaseIdentifer = "PLACEHOLDER";
-        const identifier = this.props.screenProps.account;
-        firebase.database().ref('activitiesList/'+identifier).once('value',(activitiesList)=>{
-            // check each element
-            activitiesList = activitiesList.toJSON();
-            for (element in activitiesList){
-                if (this.checkIfSameActivity(this.state.activityNames[index],activitiesList[element])){
-                    firebaseIdentifer = element
-                }
-            }
-        });
-        //console.warn(firebaseIdentifer);
-        firebase.database().ref('activitiesList/'+identifier+'/'+firebaseIdentifer).remove();
+        const identifier = this.props.account;
 
-        // this.setState(prevState =>{
-        //     return {
-        //         activityNames: prevState.activityNames.filter((val,i)=>{
-        //             return i != index
-        //         })
+
+        // firebase.database().ref('activitiesList/'+identifier).once('value',(activitiesList)=>{
+        //     // check each element
+        //     activitiesList = activitiesList.toJSON();
+        //     for (element in activitiesList){
+        //         if (this.checkIfSameActivity(this.state.activityList[index],activitiesList[element])){
+        //             firebaseIdentifer = element
+        //         }
         //     }
         // });
+        // firebase.database().ref('activitiesList/'+identifier+'/'+firebaseIdentifer).remove();
     }
-    // completeActivityHandler= (index)=>{
-    //     this.setState(prevState =>{
-    //         return {
-    //             activityNames: prevState.activityNames.forEach((element,eleIndex) => {
-    //                 if (eleIndex == index){
-    //                     prevState.activitiesNames[eleIndex]['complete'] = !prevState.activitiesNames[eleIndex]['complete'];
-    //                 }
-    //             })
-    //         }
-    //     });
-    // }
 
     modalCloseHandler = () =>{
         this.setState({
@@ -181,12 +166,12 @@ export default class Home extends Component {
     }
 
     render() {
-        const nickName = this.props.screenProps.nickName;
+        const nickName = this.props.nickName;
         return (
             <View style={styles.container}>
                 <StatusBar backgroundColor="#FDBE51" barStyle="light-content" animated/>
                 <Topbar userName = {nickName}
-                    curPoint={this.props.screenProps.curPoint}
+                    curPoint={this.props.curPoint}
                     addActivity = {this.addActivityHandler}/>
                 <ActivityDetails
                     activity = {this.state.selectedActivity}
@@ -197,7 +182,7 @@ export default class Home extends Component {
                 />
                 <ScrollView>
                 { 
-                    this.state.activityNames.map((activity,index)=>{
+                    this.state.activityList.map((activity,index)=>{
                         return (<ActivityBar 
                             key = {index}
                             identifier = {index}
@@ -214,6 +199,24 @@ export default class Home extends Component {
           );
     }
 }
+const mapStateToProps = (state) =>{
+    return {
+      // account: state.generalReducer.account,
+      // nickName: state.generalReducer.nickName,
+      // curPoint: state.generalReducer.curPoint,
+      // password: state.generalReducer.password,
+      ...state.generalReducer
+    }
+  }
+  
+  //dispatcher
+  const mapDispatchToProps = dispatch =>{
+    return {
+      onChangeEnergyPtr: (ptrAmt)=> dispatch(changeEnergyPtr(ptrAmt)),
+    }
+  } 
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
 const styles = StyleSheet.create({
     container: {

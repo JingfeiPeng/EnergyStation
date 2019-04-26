@@ -6,6 +6,7 @@ const initialState = {
     nickName: 'Test User Dev',
     token:'',
     curPoint: 0,
+    token: ""
 }
 
 // set name, change curPoint

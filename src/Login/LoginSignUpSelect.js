@@ -27,6 +27,8 @@ class LoginSignUpSelect extends Component {
             if (JWTToken.length > 2){
                 // decrpt the token
                 let decoded = jwtDecode(JWTToken)
+                // gets rid of ""
+                JWTToken = JWTToken.substring(1,JWTToken.length-1);
                 //Update User Info
                 this.props.fillinAccountInfo(decoded.email,decoded.name,JWTToken);
                 this.props.navigation.navigate('HomeNav');
