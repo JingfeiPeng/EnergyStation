@@ -21,11 +21,11 @@ class Home extends Component {
         ],
         selectedActivity : null,
         selectedId : null,
+        error:''
     };
     //Incorrect: N9W
     // Correct: snjw 
     fetchAllActivities = ()=>{
-        console.warn(this.props.token)
         fetch(activitiesURL,{  
             method:'GET',
             headers: { 'X-Auth-Token': this.props.token }
@@ -34,12 +34,12 @@ class Home extends Component {
             if (res.ok){
                 return res.json();
             } else {
-                return res.text()
+                throw res.text()
             }
         })
         .then(res => {
-            // console.warn(res)
-            this.setState({activityList:res}, () => {console.warn(this.state.activityList)})
+            console.warn("res" + res)
+            this.setState({activityList:res})
         })
         .catch(err => console.warn(err))
         // firebase.database().ref('activitiesList/'+identifier).on('value',(data)=>{

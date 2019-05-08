@@ -55,14 +55,29 @@ const customDrawerComponent = (props) =>(
 )
 
 export const socialNav = createDrawerNavigator({
-    Social: {screen: Social},
-    Maps:{screen: Maps}
-},{
+    "Friends List": {screen: (props) => <Social  {...props} option="friendList" />},
+    "Friend Requests":{screen: (props) => <Social  {...props} option="friendReq" />},
+    "All users":{screen: (props) => <Social  {...props} option="allUsers" />}
+    },{
     contentComponent: customDrawerComponent,
     drawerWidth:width*0.5,
     contentOptions:{
         activeTintColor:'orange'
-    }
+    },
+    // headerMode: 'float',
+    // navigationOptions: ({navigation}) => ({
+    //   headerStyle: {backgroundColor: 'green'},
+    //   title: 'Logged In to your app!',
+    //   gesturesEnabled: false,
+    //   headerLeft: <Text onPress={() => {
+    //     // Coming soon: navigation.navigate('DrawerToggle')
+    //     if (navigation.state.index === 0) {
+    //       navigation.navigate('DrawerOpen')
+    //     } else {
+    //       navigation.navigate('DrawerClose')
+    //     }
+    //   }}>Menu</Text>
+    // })
 })
 
 export const HomeNav = createBottomTabNavigator({

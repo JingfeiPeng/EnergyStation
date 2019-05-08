@@ -63,12 +63,12 @@ class Login extends Component {
             .catch(err => console.warn(err))
 
         })
-        .then(res =>{
+        .then(async (res )=>{
             if (res.invalid == true){
                 throw new Error(res.message)
             }
             // account then NickName
-            this.props.onFillinAccountInfo(this.state.account,this.state.account!=''? this.state.account: 'Test User', res, this.state.rememberLogin);
+            await this.props.onFillinAccountInfo(this.state.account,this.state.account!=''? this.state.account: 'Test User', res, this.state.rememberLogin);
             this.props.navigation.navigate('HomeNav');
         })
         .catch(err => {

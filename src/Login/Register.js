@@ -140,12 +140,12 @@ export default class Register extends Component {
                         }
                     }).catch(err => console.warn(err))
             })
-            .then(parsedRes => {
+            .then(async (parsedRes) => {
                 // handle exception case
                 if (typeof parsedRes == 'string'){
                     throw parsedRes;
                 }
-                this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.nickName,parsedRes.token,this.state.rememberLogin);
+                await this.props.screenProps.onFillinAccountInfo(this.state.account,this.state.nickName,parsedRes.token,this.state.rememberLogin);
                 this.props.navigation.navigate('HomeNav',{
                     userName: this.state.account,
                 });

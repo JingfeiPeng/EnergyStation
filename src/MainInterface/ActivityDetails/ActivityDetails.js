@@ -124,6 +124,9 @@ export default class ActivityDetails extends Component {
         this.setState({
             activity: this.props.activity
         })
+        // let time = new Date();
+        // time = time.toLocaleTimeString()
+        // console.warn(time)
     }
 
     componentWillReceiveProps(nextProps){
@@ -138,17 +141,14 @@ export default class ActivityDetails extends Component {
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
     _handleDatePicked = (time) => {
+        time = time.toLocaleTimeString()
         time = time.toString();
-        let timeParts = time.split(':');
-        let splitFirstPart = timeParts[0].split(' ');
-        let hour = splitFirstPart[4];
-        let minute = timeParts[1];
+        console.warn(time)
         this.setState(prevState => {
             return {
                 activity:{
                     ...prevState.activity,
-                    hour: hour,
-                    minute: minute
+                    startTime: time
                 }
             }
         })
@@ -168,6 +168,7 @@ export default class ActivityDetails extends Component {
             )
         }
     }
+
     
     clearError = () =>{
         this.setState({      
@@ -200,12 +201,12 @@ export default class ActivityDetails extends Component {
                     </Picker>
                     </View>
 
-                    <Text style={styles.textLabel}> Activity Name: </Text>
+                    {/* <Text style={styles.textLabel}> Activity Name: </Text> */}
                     <View style={this.state.validate.name == false ? styles.invalidInput: styles.validInput }>
                         <TextInput 
                             underlineColorAndroid = 'transparent'
                             style={{borderBottomColor:"red"}}
-                            value={this.state.activity.activityName}
+                            value={this.state.activity.ActivityName}
                             onChangeText = {(val) =>this.changeActivityInfoHandler("activityName",val)}
                             placeholder = "Activity Name">
                         </TextInput>
@@ -228,13 +229,14 @@ export default class ActivityDetails extends Component {
                                 <Text style={styles.textLabel}>Start time</Text>
                                 <TextInput placeholder="10:00" 
                                     style={{width:90,color:'black'}}
-                                     value={pad(this.state.activity.hour, 2)+':'+pad(this.state.activity.minute,2)}
+                                    //  value={pad(this.state.activity.hour, 2)+':'+pad(this.state.activity.minute,2)}
+                                    value = {this.state.activity.startTime}
                                     editable={false}>
                                 </TextInput>
                                 {timePickerIcon}
                                 <DateTimePicker
                                     mode='time'
-                                    //date = {new Date(2019,2,24, this.state.hour,this.state.minute)}
+                                    date = {new Date()}
                                     datePickerModeAndroid='spinner'
                                     isVisible={this.state.isDateTimePickerVisible}
                                     onConfirm={this._handleDatePicked}
