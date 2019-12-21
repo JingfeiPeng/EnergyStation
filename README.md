@@ -2,7 +2,6 @@
 A mobile app built using React Native, aimed to help people to track events
 
 <h2>Screenshots</h2>
-<img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/energyStation.png" width="300" height="600"/>
 <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/energyStationIntro.png" width="300" height="600"/>
 <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/energyStationLoginScreen.png" width="300" height="600"/>
 <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/ESHome.png" width="300" height="600"/>
