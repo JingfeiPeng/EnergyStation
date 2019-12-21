@@ -1,5 +1,6 @@
 # EnergyStation
-A mobile app built using React Native, aimed to help people to track events
+A mobile app built using React Native, aimed to help people to track events.
+Please find the backend server at https://github.com/JingfeiPeng/EnergyStationBackend
 
 <h1>Screenshots</h2>
 <h2>Login and register account</h2>
