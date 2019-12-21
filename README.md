@@ -2,8 +2,8 @@
 A mobile app built using React Native, aimed to help people to track events
 
 <h2>Screenshots</h2>
+<p>Screens for login and register account</p>
 <div style="display: inline">
-  Screens for login and register account
   <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/energyStationIntro.png" width="250" height="500"/>
   <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/energyStationLoginScreen.png" width="250" height="500"/>
   <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/ESHome.png" width="250" height="500"/>
