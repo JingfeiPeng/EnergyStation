@@ -1,17 +1,17 @@
 # EnergyStation
 A mobile app built using React Native, aimed to help people to track events
 
-<h2>Screenshots</h2>
-<p>Screens for login and register account</p>
+<h1>Screenshots</h2>
+<h2>Screens for login and register account</h2>
 <div style="display: inline">
-  <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/energyStationIntro.png" width="250" height="500"/>
-  <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/energyStationLoginScreen.png" width="250" height="500"/>
-  <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/engeryStationRegister.png" width="250" height="500"/>
+  <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/energyStationIntro.png" width="300" height="600"/>
+  <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/energyStationLoginScreen.png" width="300" height="600"/>
+  <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/engeryStationRegister.png" width="300" height="600"/>
 </div>
 <br>
-<p> This page has missions for Users to finish. Finishing 1 mission gains energy point which is displayed at the left top energy ball
+<h2> This page has missions for Users to finish. Finishing 1 mission gains energy point which is displayed at the left top energy ball</h2>
 <div style="display: inline">
-  <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/ESHome.png" width="250" height="500"/>
+  <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/ESHome.png" width="300" height="600"/>
   <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/ES_activityDetail.png" width="300" height="600"/>
   <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/ES_activityDetailTimer.png" width="300" height="600"/>
 </div>
