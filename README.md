@@ -23,7 +23,7 @@ A mobile app built using React Native, aimed to help people to track events
   <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/ES_FriendList.png" width="300" height="600"/>
   <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/ES_ViewAllUsers.png" width="300" height="600"/>
   <img src="https://github.com/JingfeiPeng/JeffPeng/blob/master/src/assets/images/ES_ViewFriendRequest.png" width="300" height="600"/>
-  (ps: Yes I liked Nier Automata a lot at that time...)
+  <p>(ps: Yes I really liked Nier Automata at that time...)</p>
 </div>
 <h2>Settings</h2>
 <p>Users can change their nickname, view their info, change password, and logout at this page</p>
