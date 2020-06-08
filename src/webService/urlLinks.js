@@ -1,9 +1,9 @@
 // const address = "192.168.0.28"
 // const address = '10.7.3.48';
-const address = "192.168.0.16";
-export const registerAcocuntURL = `http://${address}:3000/energyStation/users/`;
-export const loginURL = `http://${address}:3000/energyStation/ESauth`
-export const activitiesURL = `http://${address}:3000/energyStation/activities/`
-export const fetchUsersUrl = `http://${address}:3000/energyStation/users/`;
-export const fetchFriendListUrl = `http://${address}:3000/energyStation/friendLists/friends`
-export const sendFriendReqUrl = `http://${address}:3000/energyStation/friendLists/sendRequest`
+const address = "192.168.0.12:3000";
+export const registerAcocuntURL = `http://${address}/energyStation/users/`;
+export const loginURL = `http://${address}/energyStation/ESauth`
+export const activitiesURL = `http://${address}/energyStation/activities/`
+export const fetchUsersUrl = `http://${address}/energyStation/users/`;
+export const fetchFriendListUrl = `http://${address}/energyStation/friendLists/friends`
+export const sendFriendReqUrl = `http://${address}/energyStation/friendLists/sendRequest`

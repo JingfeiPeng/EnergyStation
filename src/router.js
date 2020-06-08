@@ -21,6 +21,7 @@ import PersonalInfo from './Setting/PersonalInfo/PersonalInfo'
 import Logout from './Setting/Logout/Logout'
 import ChangeInfoPage from './Setting/PersonalInfo/ChangeInfoPage'
 import Maps from './Social/maps' 
+import ActivityDetails from './MainInterface/ActivityDetails/ActivityDetails'
 
 
 const {width,height}= Dimensions.get('window')
@@ -63,22 +64,18 @@ export const socialNav = createDrawerNavigator({
     drawerWidth:width*0.5,
     contentOptions:{
         activeTintColor:'orange'
-    },
-    // headerMode: 'float',
-    // navigationOptions: ({navigation}) => ({
-    //   headerStyle: {backgroundColor: 'green'},
-    //   title: 'Logged In to your app!',
-    //   gesturesEnabled: false,
-    //   headerLeft: <Text onPress={() => {
-    //     // Coming soon: navigation.navigate('DrawerToggle')
-    //     if (navigation.state.index === 0) {
-    //       navigation.navigate('DrawerOpen')
-    //     } else {
-    //       navigation.navigate('DrawerClose')
-    //     }
-    //   }}>Menu</Text>
-    // })
+    }
 })
+
+export const ActivitiesNav = createStackNavigator({
+    Home:{
+        screen: Home
+    },
+    Detail:{
+        screen: ActivityDetails
+    }
+})
+
 
 export const HomeNav = createBottomTabNavigator({
     Home: { screen: Home},
