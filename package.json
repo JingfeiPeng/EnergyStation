@@ -8,7 +8,7 @@
     "run-device": "react-native bundle --platform android --dev true --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "firebase": "^5.0.3",
     "jwt-decode": "^2.2.0",
     "npm": "^6.1.0",
